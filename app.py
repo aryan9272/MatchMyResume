@@ -1,12 +1,15 @@
 """
-app.py - ATS Resume Matcher using Natural Language Processing and Machine Learning.
+app.py - MATCH MY RESUME: Glassmorphic 3D ATS Analyzer.
 
-College-Level Introduction to Machine Learning (IML) Project.
 Tech Stack: Python, Streamlit, scikit-learn (TF-IDF + Cosine Similarity),
             PyMuPDF, Pandas, Plotly.
 
-Design: Clean, high-contrast, professional LIGHT THEME (no dark mode, no glassmorphism).
-No external APIs, cloud databases, or paid services required.
+Aesthetic:
+- 3D Glassmorphism UI with animated floating background geometry.
+- Strict 3-4 color palette: Midnight Navy (#0a0e1a), Electric Indigo (#6366f1),
+  Cyber Cyan (#06b6d4), and Frosted White (rgba(255, 255, 255, 0.12)).
+- Large glowing headline with cinematic 3D opening animation.
+- No external APIs or paid services required.
 """
 
 from __future__ import annotations
@@ -29,225 +32,352 @@ from skills import TECH_SKILLS, categorize_skills, get_skill_category
 # Streamlit Page Configuration
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="ATS Resume Matcher | NLP & ML",
-    page_icon="📄",
+    page_title="MATCH MY RESUME | 3D ATS Analyzer",
+    page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
 # ---------------------------------------------------------------------------
-# Professional Light Theme CSS
-# Strict Light Theme: Crisp surfaces, high contrast, no glassmorphism
+# Glassmorphism & 3D Animated Background CSS
+# Limited 3-4 Color Palette: #0a0e1a (Void), #06b6d4 (Cyan), #6366f1 (Indigo), #ffffff (Frost)
 # ---------------------------------------------------------------------------
-LIGHT_THEME_CSS = """
+GLASS_THEME_CSS = """
 <style>
-    /* Global Background and Typography */
+    /* =======================================================================
+       1. GLOBAL 3D BACKGROUND & ANIMATIONS
+       ======================================================================= */
     .stApp {
-        background-color: #f8fafc;
-        color: #0f172a;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: #0a0e1a !important;
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.18) 0px, transparent 50%),
+            radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.18) 0px, transparent 50%),
+            radial-gradient(at 50% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 60%);
+        background-attachment: fixed;
+        color: #f8fafc !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+        overflow-x: hidden;
     }
 
-    /* Headings */
-    h1, h2, h3, h4, h5, h6 {
-        color: #0f172a !important;
-        font-weight: 700 !important;
-        letter-spacing: -0.02em;
+    /* Ambient Floating 3D Orbs in Background */
+    @keyframes floatOrb1 {
+        0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+        50% { transform: translate3d(60px, 40px, 80px) scale(1.15) rotate(180deg); }
+        100% { transform: translate3d(0, 0, 0) scale(1) rotate(360deg); }
+    }
+    @keyframes floatOrb2 {
+        0% { transform: translate3d(0, 0, 0) scale(1.1) rotate(0deg); }
+        50% { transform: translate3d(-50px, -60px, 60px) scale(0.9) rotate(-180deg); }
+        100% { transform: translate3d(0, 0, 0) scale(1.1) rotate(-360deg); }
     }
 
-    /* Sidebar Styling */
-    section[data-testid="stSidebar"] {
-        background-color: #ffffff !important;
-        border-right: 1px solid #e2e8f0;
+    .bg-orb-1 {
+        position: fixed;
+        top: 10%;
+        left: -5%;
+        width: 450px;
+        height: 450px;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.22) 0%, rgba(6, 182, 212, 0) 70%);
+        filter: blur(60px);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+        animation: floatOrb1 18s ease-in-out infinite;
     }
-    section[data-testid="stSidebar"] .stMarkdown {
-        color: #334155;
+    .bg-orb-2 {
+        position: fixed;
+        bottom: 15%;
+        right: -5%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.22) 0%, rgba(99, 102, 241, 0) 70%);
+        filter: blur(70px);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+        animation: floatOrb2 22s ease-in-out infinite;
     }
 
-    /* Cards and Containers */
-    .metric-card {
-        background-color: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 18px 20px;
-        margin-bottom: 14px;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+    /* =======================================================================
+       2. CINEMATIC 3D OPENING ENTRANCE ANIMATION
+       ======================================================================= */
+    @keyframes cinematicEntrance {
+        0% {
+            opacity: 0;
+            transform: perspective(1200px) rotateX(18deg) translateY(40px) scale(0.92);
+            filter: blur(12px);
+        }
+        70% {
+            transform: perspective(1200px) rotateX(-2deg) translateY(-4px) scale(1.01);
+            filter: blur(0px);
+        }
+        100% {
+            opacity: 1;
+            transform: perspective(1200px) rotateX(0deg) translateY(0) scale(1);
+            filter: blur(0px);
+        }
     }
-    .metric-title {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #64748b;
+
+    @keyframes glowPulse {
+        0%, 100% { text-shadow: 0 0 25px rgba(6, 182, 212, 0.4), 0 0 50px rgba(99, 102, 241, 0.2); }
+        50% { text-shadow: 0 0 45px rgba(6, 182, 212, 0.7), 0 0 75px rgba(99, 102, 241, 0.4); }
+    }
+
+    .hero-container {
+        animation: cinematicEntrance 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        transform-style: preserve-3d;
+        background: rgba(17, 24, 39, 0.55);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 20px;
+        padding: 36px 32px 30px 32px;
+        margin-bottom: 28px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    .hero-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #06b6d4, #6366f1, transparent);
+    }
+
+    .large-website-title {
+        font-size: 3.5rem !important;
+        font-weight: 900 !important;
+        letter-spacing: -0.04em !important;
+        line-height: 1.05 !important;
+        margin: 0 0 8px 0 !important;
+        background: linear-gradient(135deg, #ffffff 25%, #22d3ee 65%, #818cf8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: glowPulse 4s ease-in-out infinite;
+        display: inline-block;
+    }
+
+    .hero-subtitle {
+        font-size: 1.05rem;
+        color: #94a3b8;
+        font-weight: 500;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .hero-tag {
+        display: inline-block;
+        background: rgba(6, 182, 212, 0.12);
+        color: #22d3ee;
+        border: 1px solid rgba(6, 182, 212, 0.35);
+        padding: 4px 12px;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 600;
         letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    /* =======================================================================
+       3. FROSTED GLASS CARDS & 3D HOVER TILT
+       ======================================================================= */
+    .glass-card {
+        background: rgba(17, 24, 39, 0.58) !important;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 16px;
+        padding: 22px;
+        margin-bottom: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        transform-style: preserve-3d;
+    }
+
+    .glass-card:hover {
+        transform: translateY(-5px) perspective(1000px) rotateX(2deg) scale(1.01);
+        border-color: rgba(6, 182, 212, 0.4) !important;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(6, 182, 212, 0.25);
+    }
+
+    .glass-metric-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
         margin-bottom: 6px;
     }
-    .metric-value {
-        font-size: 2.1rem;
-        font-weight: 800;
-        color: #0f172a;
+
+    .glass-metric-value {
+        font-size: 2.3rem;
+        font-weight: 900;
+        color: #ffffff;
         line-height: 1.1;
+        background: linear-gradient(135deg, #ffffff 40%, #22d3ee 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
-    .metric-subtitle {
+
+    .glass-metric-sub {
         font-size: 0.82rem;
         color: #64748b;
         margin-top: 6px;
+        font-weight: 500;
     }
 
-    /* Status Tier Badges */
+    /* Badges & Tags */
     .badge-tier-high {
         display: inline-block;
-        background-color: #dcfce7;
-        color: #15803d;
-        border: 1px solid #86efac;
+        background: rgba(6, 182, 212, 0.18);
+        color: #22d3ee;
+        border: 1px solid rgba(6, 182, 212, 0.45);
         padding: 4px 10px;
-        border-radius: 6px;
+        border-radius: 8px;
         font-weight: 700;
-        font-size: 0.85rem;
+        font-size: 0.82rem;
+        box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
     }
     .badge-tier-good {
         display: inline-block;
-        background-color: #ecfdf5;
-        color: #047857;
-        border: 1px solid #a7f3d0;
+        background: rgba(99, 102, 241, 0.18);
+        color: #a5b4fc;
+        border: 1px solid rgba(99, 102, 241, 0.45);
         padding: 4px 10px;
-        border-radius: 6px;
+        border-radius: 8px;
         font-weight: 700;
-        font-size: 0.85rem;
+        font-size: 0.82rem;
     }
     .badge-tier-mod {
         display: inline-block;
-        background-color: #fef9c3;
-        color: #a16207;
-        border: 1px solid #fde047;
+        background: rgba(255, 255, 255, 0.1);
+        color: #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.25);
         padding: 4px 10px;
-        border-radius: 6px;
+        border-radius: 8px;
         font-weight: 700;
-        font-size: 0.85rem;
+        font-size: 0.82rem;
     }
     .badge-tier-low {
         display: inline-block;
-        background-color: #fee2e2;
-        color: #b91c1c;
-        border: 1px solid #fca5a5;
+        background: rgba(239, 68, 68, 0.16);
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.4);
         padding: 4px 10px;
-        border-radius: 6px;
+        border-radius: 8px;
         font-weight: 700;
-        font-size: 0.85rem;
+        font-size: 0.82rem;
     }
 
-    /* Skill Tags */
+    /* Skill Tags (Strict 3-4 Colors) */
     .skill-tag-matched {
         display: inline-block;
-        background-color: #ecfdf5;
-        color: #065f46;
-        border: 1px solid #a7f3d0;
-        padding: 3px 9px;
-        border-radius: 5px;
+        background: rgba(6, 182, 212, 0.14);
+        color: #22d3ee;
+        border: 1px solid rgba(6, 182, 212, 0.4);
+        padding: 4px 10px;
+        border-radius: 6px;
         font-size: 0.82rem;
         font-weight: 600;
         margin: 3px 2px;
+        box-shadow: 0 2px 8px rgba(6, 182, 212, 0.15);
     }
     .skill-tag-missing {
         display: inline-block;
-        background-color: #fef2f2;
-        color: #991b1b;
-        border: 1px solid #fecaca;
-        padding: 3px 9px;
-        border-radius: 5px;
+        background: rgba(99, 102, 241, 0.14);
+        color: #a5b4fc;
+        border: 1px solid rgba(99, 102, 241, 0.35);
+        padding: 4px 10px;
+        border-radius: 6px;
         font-size: 0.82rem;
         font-weight: 600;
         margin: 3px 2px;
     }
     .skill-tag-additional {
         display: inline-block;
-        background-color: #f0f9ff;
-        color: #075985;
-        border: 1px solid #bae6fd;
-        padding: 3px 9px;
-        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        padding: 4px 10px;
+        border-radius: 6px;
         font-size: 0.82rem;
         font-weight: 600;
         margin: 3px 2px;
     }
 
-    /* Information and Header Banners */
-    .header-banner {
-        background-color: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 20px 24px;
-        margin-bottom: 22px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    /* =======================================================================
+       4. SIDEBAR & INPUT ELEMENTS IN GLASS
+       ======================================================================= */
+    section[data-testid="stSidebar"] {
+        background-color: rgba(10, 14, 26, 0.85) !important;
+        backdrop-filter: blur(24px) !important;
+        -webkit-backdrop-filter: blur(24px) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
     }
-    .header-title {
-        font-size: 1.6rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 4px;
+
+    .stTextArea textarea {
+        background: rgba(15, 23, 42, 0.65) !important;
+        backdrop-filter: blur(12px) !important;
+        color: #f8fafc !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+        border-radius: 10px !important;
+        font-family: ui-monospace, Menlo, Monaco, Consolas, monospace !important;
+        font-size: 0.86rem !important;
     }
-    .header-desc {
-        font-size: 0.95rem;
-        color: #475569;
-        margin-bottom: 0px;
+    .stTextArea textarea:focus {
+        border-color: #06b6d4 !important;
+        box-shadow: 0 0 15px rgba(6, 182, 212, 0.3) !important;
     }
-    .badge-transparency {
-        display: inline-block;
-        background-color: #eff6ff;
-        color: #1d4ed8;
-        border: 1px solid #bfdbfe;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 0.78rem;
-        font-weight: 600;
-        margin-top: 8px;
+
+    /* Button Styling */
+    .stButton>button {
+        background: linear-gradient(135deg, #06b6d4 0%, #6366f1 100%) !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 10px !important;
+        padding: 12px 24px !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+        letter-spacing: 0.02em !important;
+        box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3) !important;
+        transition: all 0.25s ease !important;
+    }
+    .stButton>button:hover {
+        transform: translateY(-2px) scale(1.01) !important;
+        box-shadow: 0 12px 35px rgba(6, 182, 212, 0.5) !important;
     }
 
     /* Tabs Styling */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
+        gap: 12px;
         background-color: transparent;
-        border-bottom: 1px solid #e2e8f0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     .stTabs [data-baseweb="tab"] {
-        height: 44px;
-        background-color: transparent;
-        border: none;
-        color: #475569;
+        color: #94a3b8;
         font-weight: 600;
-        font-size: 0.9rem;
-        padding: 0 16px;
+        font-size: 0.92rem;
+        padding: 10px 18px;
+        border-radius: 8px 8px 0 0;
     }
     .stTabs [aria-selected="true"] {
-        color: #2563eb !important;
-        border-bottom: 2px solid #2563eb !important;
-    }
-
-    /* Inputs and Buttons */
-    .stTextArea textarea {
-        background-color: #ffffff !important;
-        color: #0f172a !important;
-        border: 1px solid #cbd5e1 !important;
-        border-radius: 6px !important;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
-        font-size: 0.85rem !important;
-    }
-    .stButton>button {
-        background-color: #2563eb;
-        color: #ffffff;
-        border: none;
-        border-radius: 6px;
-        padding: 10px 20px;
-        font-weight: 600;
-        font-size: 0.95rem;
-        transition: background-color 0.15s ease;
-    }
-    .stButton>button:hover {
-        background-color: #1d4ed8;
-        color: #ffffff;
+        color: #22d3ee !important;
+        border-bottom: 2px solid #06b6d4 !important;
+        background: rgba(6, 182, 212, 0.08) !important;
     }
 </style>
+
+<!-- Floating Ambient 3D Glow Orbs -->
+<div class="bg-orb-1"></div>
+<div class="bg-orb-2"></div>
 """
-st.markdown(LIGHT_THEME_CSS, unsafe_allow_html=True)
+st.markdown(GLASS_THEME_CSS, unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------------------
@@ -266,30 +396,29 @@ def get_sample_jds() -> pd.DataFrame:
 
 
 # ---------------------------------------------------------------------------
-# Visualization Helpers (Plotly in Light Theme)
+# Plotly Charts Styled in Glassmorphic Theme (Strict 3-4 Colors)
 # ---------------------------------------------------------------------------
 def create_score_gauge(score_pct: float) -> go.Figure:
-    """Generate a clean Plotly gauge chart for the Composite ATS Score."""
+    """Generate a clean Plotly gauge chart styled for the glass theme."""
     fig = go.Figure(
         go.Indicator(
             mode="gauge+number",
             value=score_pct,
-            number={"suffix": "%", "font": {"size": 36, "color": "#0f172a", "weight": "bold"}},
-            title={"text": "Composite ATS Score", "font": {"size": 14, "color": "#475569"}},
+            number={"suffix": "%", "font": {"size": 40, "color": "#ffffff", "family": "Inter, sans-serif"}},
+            title={"text": "Composite ATS Score", "font": {"size": 14, "color": "#94a3b8"}},
             gauge={
-                "axis": {"range": [0, 100], "tickwidth": 1, "tickcolor": "#94a3b8"},
-                "bar": {"color": "#2563eb", "thickness": 0.28},
-                "bgcolor": "#f1f5f9",
+                "axis": {"range": [0, 100], "tickwidth": 1, "tickcolor": "#64748b"},
+                "bar": {"color": "#06b6d4", "thickness": 0.28},
+                "bgcolor": "rgba(255, 255, 255, 0.05)",
                 "borderwidth": 1,
-                "bordercolor": "#cbd5e1",
+                "bordercolor": "rgba(255, 255, 255, 0.15)",
                 "steps": [
-                    {"range": [0, 30], "color": "#fee2e2"},
-                    {"range": [30, 50], "color": "#fef3c7"},
-                    {"range": [50, 70], "color": "#ecfdf5"},
-                    {"range": [70, 100], "color": "#dcfce7"},
+                    {"range": [0, 35], "color": "rgba(239, 68, 68, 0.15)"},
+                    {"range": [35, 60], "color": "rgba(99, 102, 241, 0.15)"},
+                    {"range": [60, 100], "color": "rgba(6, 182, 212, 0.2)"},
                 ],
                 "threshold": {
-                    "line": {"color": "#0f172a", "width": 3},
+                    "line": {"color": "#ffffff", "width": 3},
                     "thickness": 0.75,
                     "value": score_pct,
                 },
@@ -297,8 +426,8 @@ def create_score_gauge(score_pct: float) -> go.Figure:
         )
     )
     fig.update_layout(
-        paper_bgcolor="#ffffff",
-        plot_bgcolor="#ffffff",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         height=220,
         margin=dict(l=25, r=25, t=35, b=20),
     )
@@ -306,10 +435,10 @@ def create_score_gauge(score_pct: float) -> go.Figure:
 
 
 def create_score_breakdown_chart(tfidf_pct: float, skill_pct: float, composite_pct: float) -> go.Figure:
-    """Bar chart comparing the sub-scores with composite score."""
-    categories = ["TF-IDF Cosine Similarity", "Skill Coverage Ratio", "Composite ATS Score"]
+    """Bar chart comparing sub-scores with composite score in glass theme."""
+    categories = ["TF-IDF Cosine", "Skill Coverage", "Composite ATS"]
     values = [tfidf_pct, skill_pct, composite_pct]
-    colors = ["#0284c7", "#10b981", "#2563eb"]
+    colors = ["#6366f1", "#06b6d4", "#38bdf8"]
 
     fig = go.Figure(
         data=[
@@ -318,15 +447,26 @@ def create_score_breakdown_chart(tfidf_pct: float, skill_pct: float, composite_p
                 y=values,
                 text=[f"{v:.1f}%" for v in values],
                 textposition="auto",
-                marker=dict(color=colors, line=dict(color="#e2e8f0", width=1)),
+                textfont=dict(color="#ffffff", size=12),
+                marker=dict(
+                    color=colors,
+                    line=dict(color="rgba(255, 255, 255, 0.2)", width=1),
+                ),
             )
         ]
     )
     fig.update_layout(
-        paper_bgcolor="#ffffff",
-        plot_bgcolor="#ffffff",
-        yaxis=dict(range=[0, 100], title="Score (%)", gridcolor="#f1f5f9", ticksuffix="%"),
-        xaxis=dict(tickfont=dict(color="#0f172a", size=12)),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        yaxis=dict(
+            range=[0, 100],
+            title="Score (%)",
+            gridcolor="rgba(255, 255, 255, 0.08)",
+            tickfont=dict(color="#94a3b8"),
+            titlefont=dict(color="#94a3b8"),
+            ticksuffix="%",
+        ),
+        xaxis=dict(tickfont=dict(color="#f8fafc", size=12)),
         height=220,
         margin=dict(l=20, r=20, t=25, b=20),
     )
@@ -352,7 +492,7 @@ def create_category_breakdown_chart(
             x=matched_counts,
             name="Matched Skills",
             orientation="h",
-            marker=dict(color="#10b981"),
+            marker=dict(color="#06b6d4", line=dict(color="rgba(255,255,255,0.2)", width=1)),
         )
     )
     fig.add_trace(
@@ -361,16 +501,23 @@ def create_category_breakdown_chart(
             x=missing_counts,
             name="Missing Skills",
             orientation="h",
-            marker=dict(color="#f87171"),
+            marker=dict(color="#6366f1", line=dict(color="rgba(255,255,255,0.2)", width=1)),
         )
     )
     fig.update_layout(
         barmode="stack",
-        paper_bgcolor="#ffffff",
-        plot_bgcolor="#ffffff",
-        xaxis=dict(title="Number of Skills", gridcolor="#f1f5f9"),
-        yaxis=dict(autorange="reversed"),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        xaxis=dict(title="Skill Count", gridcolor="rgba(255, 255, 255, 0.08)", tickfont=dict(color="#94a3b8")),
+        yaxis=dict(autorange="reversed", tickfont=dict(color="#f8fafc", size=11)),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            font=dict(color="#f8fafc"),
+        ),
         height=280,
         margin=dict(l=20, r=20, t=30, b=20),
     )
@@ -378,7 +525,7 @@ def create_category_breakdown_chart(
 
 
 def create_candidate_comparison_chart(benchmark_df: pd.DataFrame) -> go.Figure:
-    """Plotly horizontal bar chart ranking fictional candidate resumes on the selected role."""
+    """Plotly horizontal bar chart ranking fictional candidate resumes."""
     df_sorted = benchmark_df.sort_values("Composite ATS Score (%)", ascending=True)
 
     fig = go.Figure()
@@ -390,7 +537,8 @@ def create_candidate_comparison_chart(benchmark_df: pd.DataFrame) -> go.Figure:
             orientation="h",
             text=[f"{v:.1f}%" for v in df_sorted["Composite ATS Score (%)"]],
             textposition="auto",
-            marker=dict(color="#2563eb"),
+            textfont=dict(color="#ffffff"),
+            marker=dict(color="#06b6d4"),
         )
     )
     fig.add_trace(
@@ -401,7 +549,8 @@ def create_candidate_comparison_chart(benchmark_df: pd.DataFrame) -> go.Figure:
             orientation="h",
             text=[f"{v:.1f}%" for v in df_sorted["Skill Coverage (%)"]],
             textposition="auto",
-            marker=dict(color="#10b981"),
+            textfont=dict(color="#ffffff"),
+            marker=dict(color="#6366f1"),
         )
     )
     fig.add_trace(
@@ -412,17 +561,31 @@ def create_candidate_comparison_chart(benchmark_df: pd.DataFrame) -> go.Figure:
             orientation="h",
             text=[f"{v:.1f}%" for v in df_sorted["TF-IDF Similarity (%)"]],
             textposition="auto",
-            marker=dict(color="#0284c7"),
+            textfont=dict(color="#ffffff"),
+            marker=dict(color="rgba(255, 255, 255, 0.4)"),
         )
     )
 
     fig.update_layout(
         barmode="group",
-        paper_bgcolor="#ffffff",
-        plot_bgcolor="#ffffff",
-        xaxis=dict(range=[0, 100], title="Percentage (%)", gridcolor="#f1f5f9", ticksuffix="%"),
-        yaxis=dict(tickfont=dict(color="#0f172a", size=12, family="sans-serif")),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        xaxis=dict(
+            range=[0, 100],
+            title="Percentage (%)",
+            gridcolor="rgba(255, 255, 255, 0.08)",
+            tickfont=dict(color="#94a3b8"),
+            ticksuffix="%",
+        ),
+        yaxis=dict(tickfont=dict(color="#f8fafc", size=12)),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            font=dict(color="#f8fafc"),
+        ),
         height=340,
         margin=dict(l=20, r=20, t=30, b=20),
     )
@@ -430,11 +593,11 @@ def create_candidate_comparison_chart(benchmark_df: pd.DataFrame) -> go.Figure:
 
 
 # ---------------------------------------------------------------------------
-# Sidebar Controls & Navigation
+# Sidebar Controls & Navigation (Glassmorphic)
 # ---------------------------------------------------------------------------
-st.sidebar.markdown("### 📄 ATS Matcher Navigation")
+st.sidebar.markdown("### ⚡ Navigation")
 view_mode = st.sidebar.radio(
-    "Select Project View:",
+    "Select View:",
     options=[
         "🎯 Resume Matcher & Gap Analysis",
         "📊 Candidate Benchmark & Ranking",
@@ -445,7 +608,7 @@ view_mode = st.sidebar.radio(
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### ⚙️ Scoring Weights")
-st.sidebar.caption("Adjust composite linear weights (sum is normalized to 1.0):")
+st.sidebar.caption("Adjust composite linear weights (normalized to 1.0):")
 
 tfidf_weight = st.sidebar.slider(
     "TF-IDF Cosine Weight (Context)",
@@ -468,24 +631,22 @@ skill_weight = st.sidebar.slider(
 sum_w = tfidf_weight + skill_weight
 norm_tfidf_w = round(tfidf_weight / sum_w, 2)
 norm_skill_w = round(skill_weight / sum_w, 2)
-st.sidebar.caption(f"Normalized formula: `{norm_tfidf_w} × TFIDF + {norm_skill_w} × SkillCoverage`")
+st.sidebar.caption(f"Formula: `{norm_tfidf_w} × TFIDF + {norm_skill_w} × SkillCoverage`")
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 📚 Quick Candidate Pre-Loader")
-st.sidebar.caption("Pre-fill resume with sample fictional candidates:")
 resumes_df = get_sample_resumes()
 candidate_names = ["(Upload PDF or Paste Custom)"] + resumes_df["name"].tolist()
-selected_candidate = st.sidebar.selectbox("Choose Sample Candidate:", options=candidate_names, index=0)
+selected_candidate = st.sidebar.selectbox("Choose Sample Profile:", options=candidate_names, index=0)
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(
     """
-    **Project Specs:**
-    - Model: *Unsupervised Vector Space Model*
-    - Feature Extraction: *TF-IDF (1, 2 n-grams)*
-    - Similarity: *Cosine Similarity*
-    - Parser: *PyMuPDF (Fitz)*
-    - Platform: *100% Local / Zero API Keys*
+    **Glassmorphic 3D Architecture:**
+    - Engine: *Unsupervised Vector Space Model*
+    - Tokenizer: *Punctuation-Safe Lookaround*
+    - Parser: *PyMuPDF Digital Text Layer*
+    - Palette: *Midnight Navy / Cyan / Indigo*
     """
 )
 
@@ -495,15 +656,14 @@ st.sidebar.markdown(
 # ---------------------------------------------------------------------------
 if view_mode == "🎯 Resume Matcher & Gap Analysis":
 
+    # Hero Banner with Large Heading and 3D Opening Animation
     st.markdown(
         """
-        <div class="header-banner">
-            <div class="header-title">ATS Resume Matcher & NLP Keyword Analyzer</div>
-            <div class="header-desc">
-                Evaluate resume relevance against target job descriptions using Natural Language Processing,
-                unigram/bigram TF-IDF cosine similarity, and punctuation-aware skill dictionary taxonomy.
-            </div>
-            <span class="badge-transparency">Zero-Fabrication Baseline: TF-IDF fitted on compared document vocabulary</span>
+        <div class="hero-container">
+            <div class="hero-subtitle">Intelligent ATS Resume Analyzer & NLP Matcher</div>
+            <h1 class="large-website-title">MATCH MY RESUME</h1>
+            <br>
+            <span class="hero-tag">⚡ Vector Space Model • Unsupervised TF-IDF • Punctuation-Safe</span>
         </div>
         """,
         unsafe_allow_html=True,
@@ -530,13 +690,13 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
             row_match = resumes_df[resumes_df["name"] == selected_candidate]
             if not row_match.empty:
                 extracted_resume_text = row_match.iloc[0]["text"]
-                st.info(f"Loaded sample profile for **{selected_candidate}**.")
+                st.info(f"Loaded profile: **{selected_candidate}**")
 
         if resume_source_mode == "Upload PDF Document":
             uploaded_pdf = st.file_uploader(
-                "Upload Resume in PDF Format",
+                "Upload Resume (PDF format)",
                 type=["pdf"],
-                help="PyMuPDF will parse text layer directly without external servers.",
+                help="PyMuPDF parses digital text layers directly.",
             )
             if uploaded_pdf is not None:
                 parse_out = parse_uploaded_pdf(uploaded_pdf)
@@ -552,7 +712,6 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
                         for w in pdf_warning_list:
                             st.warning(f"⚠️ {w}")
 
-            # Show text area to let user review or edit the extracted text
             resume_input = st.text_area(
                 "Extracted Resume Content (Editable):",
                 value=extracted_resume_text,
@@ -573,10 +732,9 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
             "Select Benchmark Job Role:",
             options=role_options,
             index=0,
-            help="Selecting a role auto-populates standard industry requirements.",
+            help="Selecting a role auto-populates standard requirements.",
         )
 
-        # Retrieve default text for selected role
         default_jd_text = ""
         matched_role_row = jds_df[jds_df["role"] == selected_role]
         if not matched_role_row.empty:
@@ -591,7 +749,7 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
 
     # Action Button
     st.markdown("<br>", unsafe_allow_html=True)
-    run_match = st.button("🚀 Calculate ATS Match & Skill Coverage", use_container_width=True)
+    run_match = st.button("🚀 Analyze Resume & Calculate 3D Match", use_container_width=True)
 
     if run_match or (resume_input and jd_input):
         if not resume_input.strip():
@@ -611,7 +769,7 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
                 st.error(f"Analysis Error: {match_result.error}")
             else:
                 # -----------------------------------------------------------
-                # Metrics Row
+                # Metrics Row (Glassmorphic 3D Cards)
                 # -----------------------------------------------------------
                 st.markdown("---")
                 st.subheader("📊 Match Performance Summary")
@@ -622,17 +780,17 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
                     tier_class = "badge-tier-mod"
                     if match_result.composite_pct >= 80:
                         tier_class = "badge-tier-high"
-                    elif match_result.composite_pct >= 65:
+                    elif match_result.composite_pct >= 60:
                         tier_class = "badge-tier-good"
                     elif match_result.composite_pct < 40:
                         tier_class = "badge-tier-low"
 
                     st.markdown(
                         f"""
-                        <div class="metric-card">
-                            <div class="metric-title">Composite ATS Score</div>
-                            <div class="metric-value">{match_result.composite_pct}%</div>
-                            <div class="metric-subtitle">
+                        <div class="glass-card">
+                            <div class="glass-metric-title">Composite ATS Score</div>
+                            <div class="glass-metric-value">{match_result.composite_pct}%</div>
+                            <div class="glass-metric-sub">
                                 <span class="{tier_class}">{match_result.ats_label}</span>
                             </div>
                         </div>
@@ -643,10 +801,10 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
                 with mcol2:
                     st.markdown(
                         f"""
-                        <div class="metric-card">
-                            <div class="metric-title">TF-IDF Similarity</div>
-                            <div class="metric-value">{match_result.tfidf_pct}%</div>
-                            <div class="metric-subtitle">N-gram (1,2) Cosine Overlap</div>
+                        <div class="glass-card">
+                            <div class="glass-metric-title">TF-IDF Similarity</div>
+                            <div class="glass-metric-value">{match_result.tfidf_pct}%</div>
+                            <div class="glass-metric-sub">N-gram (1,2) Cosine Overlap</div>
                         </div>
                         """,
                         unsafe_allow_html=True,
@@ -655,10 +813,10 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
                 with mcol3:
                     st.markdown(
                         f"""
-                        <div class="metric-card">
-                            <div class="metric-title">Skill Coverage</div>
-                            <div class="metric-value">{match_result.skill_coverage_pct}%</div>
-                            <div class="metric-subtitle">
+                        <div class="glass-card">
+                            <div class="glass-metric-title">Skill Coverage</div>
+                            <div class="glass-metric-value">{match_result.skill_coverage_pct}%</div>
+                            <div class="glass-metric-sub">
                                 {len(match_result.matched_skills)} of {len(match_result.jd_skills)} Required Skills
                             </div>
                         </div>
@@ -669,10 +827,10 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
                 with mcol4:
                     st.markdown(
                         f"""
-                        <div class="metric-card">
-                            <div class="metric-title">Vocabulary & Speed</div>
-                            <div class="metric-value">{match_result.tfidf_vocab_size}</div>
-                            <div class="metric-subtitle">
+                        <div class="glass-card">
+                            <div class="glass-metric-title">Vocabulary & Speed</div>
+                            <div class="glass-metric-value">{match_result.tfidf_vocab_size}</div>
+                            <div class="glass-metric-sub">
                                 Joint Vocab Size | {match_result.processing_time_ms} ms
                             </div>
                         </div>
@@ -681,7 +839,7 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
                     )
 
                 # -----------------------------------------------------------
-                # Visual Analytics Row
+                # Visual Analytics Row (Glass Charts)
                 # -----------------------------------------------------------
                 chart_col1, chart_col2 = st.columns([1, 1])
 
@@ -716,8 +874,7 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
                 with tab1:
                     st.markdown("#### Punctuation-Aware Skill Taxonomy Matching")
                     st.caption(
-                        "Skills extracted using exact boundary matching preserving C++, C#, .NET, "
-                        "Node.js, CI/CD, and hyphenated machine learning algorithms."
+                        "Extracted via boundary matching preserving C++, C#, .NET, Node.js, and CI/CD."
                     )
 
                     scol1, scol2, scol3 = st.columns(3)
@@ -764,8 +921,8 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
                 with tab2:
                     st.markdown("#### Explainable AI: Top Shared N-Gram Features")
                     st.caption(
-                        "Shows the specific terms with highest vector dot product weights ($u_i \\times v_i$). "
-                        "These terms directly explain why the TF-IDF similarity score was assigned."
+                        "Terms with highest vector dot product weights ($u_i \\times v_i$). "
+                        "These terms directly explain the TF-IDF similarity score."
                     )
 
                     if match_result.top_shared_terms:
@@ -784,11 +941,12 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
                                 orientation="h",
                                 title="Top Vector Space Influencers",
                                 color="Vector Dot Product Weight",
-                                color_continuous_scale="Blues",
+                                color_continuous_scale=["#6366f1", "#06b6d4"],
                             )
                             xai_bar.update_layout(
-                                paper_bgcolor="#ffffff",
-                                plot_bgcolor="#ffffff",
+                                paper_bgcolor="rgba(0,0,0,0)",
+                                plot_bgcolor="rgba(0,0,0,0)",
+                                font=dict(color="#f8fafc"),
                                 height=260,
                                 margin=dict(l=10, r=10, t=30, b=10),
                             )
@@ -807,7 +965,7 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
 
                 with tab4:
                     st.markdown("#### Technical Domain Skill Distribution")
-                    st.caption("Visual breakdown of matched versus missing skills grouped by engineering category.")
+                    st.caption("Visual breakdown of matched vs missing skills grouped by engineering category.")
                     cat_chart = create_category_breakdown_chart(
                         match_result.matched_by_category,
                         match_result.missing_by_category,
@@ -835,13 +993,11 @@ elif view_mode == "📊 Candidate Benchmark & Ranking":
 
     st.markdown(
         """
-        <div class="header-banner">
-            <div class="header-title">Candidate Benchmark & Multi-Resume Ranking</div>
-            <div class="header-desc">
-                Evaluate all 5 fictional sample candidates against any target job role simultaneously.
-                Demonstrates the vector space model's discriminatory power across diverse engineering backgrounds.
-            </div>
-            <span class="badge-transparency">Unsupervised Batch Evaluation: No synthetic scores or hardcoded rankings</span>
+        <div class="hero-container">
+            <div class="hero-subtitle">Multi-Resume Benchmark Evaluation</div>
+            <h1 class="large-website-title">CANDIDATE RANKING</h1>
+            <br>
+            <span class="hero-tag">⚡ Batch Evaluation • Real Discrimination • Fictional Candidate Pool</span>
         </div>
         """,
         unsafe_allow_html=True,
@@ -893,18 +1049,6 @@ elif view_mode == "📊 Candidate Benchmark & Ranking":
         mime="text/csv",
     )
 
-    st.markdown("---")
-    st.markdown("#### 💡 Candidate Profile Insights")
-    st.markdown(
-        """
-        - **Eva Chen** (AI/ML Engineer): Top match for AI/ML and Data Science roles due to deep transformer & MLOps coverage.
-        - **Carol Smith** (M.Sc. Data Science): High match for Data Science and Analyst roles with strong PyTorch and Spark experience.
-        - **Alice Johnson** (Fresh Graduate): Strong college-level Data Science profile with solid baseline NLP and scikit-learn skills.
-        - **Bob Martinez** (Full Stack Developer): Dominates for Web / Full Stack roles with React, Node.js, and Docker; low fit for Data Science.
-        - **David Lee** (Fresher / IT Support): Demonstrates accurate low scoring for advanced roles, preventing false positive hires.
-        """
-    )
-
 
 # ---------------------------------------------------------------------------
 # VIEW 3: Model Transparency & Viva Guide
@@ -913,13 +1057,11 @@ elif view_mode == "🔬 Model Transparency & Viva Guide":
 
     st.markdown(
         """
-        <div class="header-banner">
-            <div class="header-title">Model Transparency, Mathematical Foundation & Viva Guide</div>
-            <div class="header-desc">
-                Comprehensive academic documentation for Introduction to Machine Learning (IML) viva examinations,
-                detailing TF-IDF formulations, Vector Space Models, and practical engineering trade-offs.
-            </div>
-            <span class="badge-transparency">Zero Black-Box: Fully explainable NLP pipeline</span>
+        <div class="hero-container">
+            <div class="hero-subtitle">Academic Documentation & Viva Voce Guide</div>
+            <h1 class="large-website-title">MODEL TRANSPARENCY</h1>
+            <br>
+            <span class="hero-tag">⚡ Mathematical Derivations • Zero Black-Box • 16 Viva Questions</span>
         </div>
         """,
         unsafe_allow_html=True,
@@ -942,35 +1084,16 @@ elif view_mode == "🔬 Model Transparency & Viva Guide":
             is the shared vocabulary size of unigrams and bigrams.
 
             #### Term Frequency with Sublinear Scaling:
-            Raw term frequency $\text{tf}(t, d)$ represents the number of occurrences of term $t$ in document $d$.
-            To prevent documents with repetitive keyword stuffing from gaining unfair dominance, we apply sublinear log-scaling:
             $$\text{tf}_{\text{scaled}}(t, d) = \begin{cases} 1 + \ln(\text{tf}(t, d)) & \text{if } \text{tf}(t, d) > 0 \\ 0 & \text{otherwise} \end{cases}$$
 
             #### Inverse Document Frequency (Smooth IDF):
-            With $n=2$ documents in the pairwise comparison (or $N$ in a corpus):
             $$\text{idf}(t) = \ln\left(\frac{1 + n}{1 + \text{df}(t)}\right) + 1$$
-            Where $\text{df}(t)$ is the document frequency (number of documents containing term $t$).
 
             #### Composite TF-IDF Weight:
             $$\text{tfidf}(t, d) = \text{tf}_{\text{scaled}}(t, d) \times \text{idf}(t)$$
 
-            #### L2 Normalization:
-            Each document vector is normalized to unit Euclidean length:
-            $$\mathbf{u} = \frac{\mathbf{v}}{\|\mathbf{v}\|_2} = \frac{\mathbf{v}}{\sqrt{\sum_{i=1}^{|V|} v_i^2}}$$
-
             #### Cosine Similarity Metric:
-            Cosine similarity measures the cosine of the angle $\theta$ between the unit vectors:
             $$\text{Cosine Similarity}(\mathbf{u}, \mathbf{v}) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2} = \sum_{i=1}^{|V|} u_i v_i$$
-            Because all TF-IDF weights are non-negative, $\text{Cosine Similarity} \in [0.0, 1.0]$.
-            """
-        )
-
-        st.markdown("### 2. Composite ATS Score Formulation")
-        st.markdown(
-            r"""
-            The final ATS Score balances contextual text congruence with explicit skill coverage:
-            $$\text{ATS Score} = w_{\text{tfidf}} \cdot \text{CosineSimilarity} + w_{\text{skill}} \cdot \left(\frac{|\text{ResumeSkills} \cap \text{JDSkills}|}{|\text{JDSkills}|}\right)$$
-            Where $w_{\text{tfidf}} + w_{\text{skill}} = 1.0$.
             """
         )
 
@@ -978,27 +1101,18 @@ elif view_mode == "🔬 Model Transparency & Viva Guide":
         st.markdown("### Punctuation-Aware Skill Extraction Architecture")
         st.markdown(
             """
-            Standard regex tokenizers (`\\w+`) strip all non-alphanumeric punctuation. This creates catastrophic failures for technical skills:
-            - **`C++`** collapses into `c`, falsely matching any isolated letter 'c'.
-            - **`C#`** collapses into `c`.
-            - **`.NET`** loses its leading dot or is discarded as punctuation.
-            - **`Node.js`** separates into `node` and `js`.
-            - **`CI/CD`** separates into `ci` and `cd`.
+            Standard regex tokenizers (`\\w+`) strip punctuation, reducing `C++` and `C#` into `c`,
+            causing false matches on the single letter 'c'.
 
             #### Solution Implemented in `skills.py`:
-            1. **Lookahead / Lookbehind Boundaries**: For single-letter languages like `C`, we use:
-               `(?<![a-zA-Z0-9+#])c(?![a-zA-Z0-9+#])`
-               This guarantees `C` will **never** trigger when the resume contains `C++` or `C#`.
-            2. **Alias Canonicalization**: Terms like `sklearn` are mapped to `scikit-learn`, `k8s` to `Kubernetes`.
-            3. **Custom TF-IDF Token Pattern**:
-               `token_pattern=r"(?u)\\b[a-zA-Z0-9][a-zA-Z0-9\\+\\#\\.\\-_/]*\\b"`
-               Preserves technical punctuation during scikit-learn vectorization.
+            - Negative Lookaround boundaries:
+              `(?<![a-zA-Z0-9+#])c(?![a-zA-Z0-9+#])`
+            - Preserves `.NET`, `Node.js`, `CI/CD`, and `scikit-learn` cleanly.
             """
         )
 
     with t_tab3:
         st.markdown("### 🎓 Comprehensive Viva Examination Questions & Model Answers")
-        st.caption("Review these 16 questions to prepare for project defense and viva evaluation:")
 
         viva_qa = [
             (

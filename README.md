@@ -14,7 +14,8 @@ A transparent, college-level Introduction to Machine Learning (IML) project that
 - **Actionable Gap Recommendations:** Delivers automated, role-specific advice based on missing skills, word counts, and vocabulary alignment.
 - **Candidate Benchmark Ranking:** Evaluates and ranks 5 fictional candidate profiles simultaneously against any selected job role using interactive Plotly charts.
 - **Robust PDF Parsing:** Built with PyMuPDF (fitz) to extract clean text from digital PDFs with graceful handling for corrupt, empty, password-protected, or image-only files.
-- **Professional Light Theme:** Clean, high-contrast, accessible corporate/academic light theme (no dark mode, no blurry glassmorphism).
+- **Glassmorphic 3D UI & Animated Background:** Sleek, high-contrast 3D frosted glass design with dynamic floating background geometry, cinematic opening animations, and a strict 3-4 color palette (Midnight Navy, Cyber Cyan, Electric Indigo, and Frost White).
+- **Large Hero Branding:** Prominent glowing header with smooth 3D entrance and metallic gradient typography.
 - **Thorough Test Suite:** 53 unit and integration tests covering all parsing, vectorization, scoring, and edge cases.
 
 ---
