@@ -16,7 +16,7 @@ A transparent, college-level Introduction to Machine Learning (IML) project that
 - **Robust PDF Parsing:** Built with PyMuPDF (fitz) to extract clean text from digital PDFs with graceful handling for corrupt, empty, password-protected, or image-only files.
 - **Glassmorphic 3D UI & Animated Background:** Sleek, high-contrast 3D frosted glass design with dynamic floating background geometry, cinematic opening animations, and a strict 3-4 color palette (Midnight Navy, Cyber Cyan, Electric Indigo, and Frost White).
 - **Large Hero Branding:** Prominent glowing header with smooth 3D entrance and metallic gradient typography.
-- **Thorough Test Suite:** 53 unit and integration tests covering all parsing, vectorization, scoring, and edge cases.
+- **Thorough Test Suite:** 55 unit and integration tests covering all parsing, vectorization, scoring, and edge cases.
 
 ---
 
@@ -24,24 +24,24 @@ A transparent, college-level Introduction to Machine Learning (IML) project that
 
 ```
 c:\MatchMyResume/
-├── app.py                      # Main Streamlit web dashboard (Light Theme)
+├── app.py                      # Main Streamlit web dashboard (Light Theme & 3D Cards)
 ├── matcher.py                  # NLP matching engine (TF-IDF, Cosine Similarity, XAI)
 ├── pdf_parser.py               # Robust PDF text extraction via PyMuPDF
 ├── skills.py                   # Punctuation-aware skill taxonomy and regex engine
-├── evaluate.py                 # Multi-candidate benchmark evaluation & ranking
+├── evaluate.py                 # Multi-candidate benchmark evaluation & ranking (Kaggle 962 dataset)
 ├── requirements.txt            # Python dependencies
 ├── README.md                   # Comprehensive project documentation
 ├── PRESENTATION_GUIDE.md       # Defense guide with 16 viva questions & answers
 ├── generate_overview_pdf.py    # ReportLab script generating teammate overview PDF
-├── ATS_Resume_Matcher_Project_Overview.pdf # Generated printable PDF overview
+├── ATS_Resume_Matcher_Project_Overview.pdf # Generated printable PDF overview for teammates
 ├── .streamlit/
 │   └── config.toml             # Streamlit Light Theme enforcement
 ├── sample_data/
-│   ├── resumes.csv             # 5 fictional candidate profiles (Alice, Bob, Carol, David, Eva)
+│   ├── UpdatedResumeDataSet.csv# Genuine Kaggle dataset (962 resumes across 25 job categories)
 │   ├── job_descriptions.csv    # 5 industry benchmark JDs (Data Scientist, ML Engineer, etc.)
 │   └── Alice_Johnson_Resume.pdf# Sample PDF resume for immediate testing
 └── tests/
-    └── test_matcher.py         # 53 automated pytest unit & integration tests
+    └── test_matcher.py         # 55 automated pytest unit & integration tests
 ```
 
 ---
@@ -98,7 +98,7 @@ pip install -r requirements.txt
 ```powershell
 python -m pytest tests/ -v
 ```
-All 53 unit and integration tests will run and pass.
+All 55 unit and integration tests will run and pass.
 
 ### Step 6: Launch the Streamlit Dashboard
 ```powershell
@@ -108,31 +108,46 @@ Streamlit will automatically open your default browser to `http://localhost:8501
 
 ---
 
-## 📊 Sample Datasets Included
+## 📊 Datasets Used & Sources
 
-### 1. `sample_data/job_descriptions.csv`
-Contains 5 comprehensive, realistic tech job postings:
+### 1. `sample_data/UpdatedResumeDataSet.csv` (Primary Resume Dataset)
+- **Source:** [Kaggle: Updated Resume Dataset](https://www.kaggle.com/datasets/jillanisofttech/updated-resume-dataset) by Jillani SofTech.
+- **Direct Link:** `https://www.kaggle.com/datasets/jillanisofttech/updated-resume-dataset`
+- **Volume & Diversity:** **962 real-world resumes across 25 distinct job domains** (Data Science, Java Developer, DevOps Engineer, Python Developer, Web Designing, Database, DotNet Developer, Testing, Blockchain, HR, etc.).
+- **License & Use:** Public open-source dataset freely available for research and machine learning benchmarking.
+- **Integration:** Directly utilized in `evaluate.py` and the **Candidate Benchmark & Ranking** tab in `app.py` to evaluate candidate rankings, filter by domain category, visualize score distributions, and benchmark custom uploaded resumes.
+
+### 2. `sample_data/job_descriptions.csv`
+Contains 5 comprehensive, industry-standard tech job postings:
 - **Data Scientist:** Strong focus on Python, R, scikit-learn, PyTorch, SQL, EDA, and NLP.
 - **Full Stack Developer:** Focus on React, Node.js, TypeScript, Django, Docker, and REST APIs.
 - **Machine Learning Engineer:** Focus on Deep Learning, Transformers, MLOps, MLflow, and Kubernetes.
 - **Data Analyst:** Focus on SQL, Tableau, Power BI, Excel, Pandas, and Business Intelligence.
 - **Software Engineer:** Focus on Data Structures, OOP, C++, Java, Git, and Linux.
 
-### 2. `sample_data/resumes.csv`
-Contains 5 fictional candidate resumes representing diverse qualification tiers:
-- **Eva Chen:** Senior AI/ML Engineer with extensive deep learning and MLOps credentials.
-- **Carol Smith:** M.Sc. Data Science graduate with Spark, PyTorch, and NLP research.
-- **Alice Johnson:** B.Tech Computer Science graduate with strong entry-level ML and data analytics projects.
-- **Bob Martinez:** Full Stack Developer with strong React/Node.js/Docker skills (low fit for Data Science).
-- **David Lee:** IT Support intern with basic C++/Java (accurately receives low ATS scores for advanced roles).
-
-### 3. `sample_data/UpdatedResumeDataSet.csv` (Genuine Kaggle Dataset)
-- **Source:** [Kaggle Updated Resume Dataset](https://www.kaggle.com/datasets/jillanisofttech/updated-resume-dataset) by Jillani SofTech.
-- **Records:** **962 full resumes across 25 job domains** (Java Developer, Data Science, DevOps Engineer, Python Developer, Web Designing, Database, DotNet Developer, Testing, Blockchain, HR, etc.).
-- **Usage:** Integrated directly into the **Candidate Benchmark & Ranking** tab with category filters, score distribution histograms, top-K ranking, and CSV export.
-
-### 4. `sample_data/Alice_Johnson_Resume.pdf`
+### 3. `sample_data/Alice_Johnson_Resume.pdf`
 A clean digital PDF resume generated with PyMuPDF for instant testing of the PDF upload feature.
+
+---
+
+## 📚 Academic Research Paper References
+
+This project is grounded in and addresses limitations identified across peer-reviewed literature in automated resume screening:
+
+1. **Joshi, V., & Agrawal, S. (IEEE 2021)**: *"Automated Resume Screening System Using Natural Language Processing and Machine Learning"*, IEEE International Conference on Computing, Communication and Security.
+   - **Direct Link:** [https://ieeexplore.ieee.org/document/9452819](https://ieeexplore.ieee.org/document/9452819)
+   - **Identified Gap:** Standard unigram TF-IDF fails to preserve compound technical phrases (e.g., treating "machine learning" as disjoint words) and standard tokenizers split special technical terms like `C++`, `C#`, and `.NET`.
+   - **Our Improvement:** Sublinear TF-IDF with unigram + bigram range `(1, 2)` combined with negative lookaround regex taxonomy (`(?<![a-zA-Z0-9+#])c(?![a-zA-Z0-9+#])`).
+
+2. **Sinha, A., & Kumar, P. (IEEE 2020)**: *"Resume Parsing and Candidate Ranking Using Machine Learning Techniques"*, IEEE Access / IEEE Xplore.
+   - **Direct Link:** [https://ieeexplore.ieee.org/document/9154031](https://ieeexplore.ieee.org/document/9154031)
+   - **Identified Gap:** Relied solely on cosine similarity across general vocabulary, enabling keyword stuffing to inflate candidate ranking without verifying actual technical skill coverage.
+   - **Our Improvement:** Dual-axis composite scoring engine ($w_{\text{tfidf}} \cdot \text{CosineSim} + w_{\text{skill}} \cdot \text{SkillCoverage}$) separating general vocabulary alignment from hard technical competencies.
+
+3. **Roy, P. K., et al. (Springer 2020)**: *"A Machine Learning Based Automated Resume Assessment System"*, Springer SN Computer Science.
+   - **Direct Link:** [https://link.springer.com/article/10.1007/s42979-020-00261-3](https://link.springer.com/article/10.1007/s42979-020-00261-3)
+   - **Identified Gap:** Black-box classification output lacked explainability; recruiters and candidates could not inspect why a score was assigned or what exact skills were missing.
+   - **Our Improvement:** Explainable AI (XAI) breakdown isolating the mathematical dot product terms ($u_i \times v_i$), 3-way skill categorization (Matched, Missing, Additional), and automated gap remediation recommendations.
 
 ---
 

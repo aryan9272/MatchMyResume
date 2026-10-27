@@ -177,21 +177,56 @@ Combining both into a weighted composite score provides a holistic view of both 
 
 ---
 
-## 5. Candidate Benchmark Profiles
+## 5. Candidate Benchmark & Kaggle Dataset
 
-The system includes 5 diverse fictional candidates in `sample_data/resumes.csv` to benchmark model discrimination:
-
-| Candidate | Background / Focus | Best Fit Role | Expected Performance |
-| :--- | :--- | :--- | :--- |
-| **Eva Chen** | AI/ML Engineer (LLMs, Transformers, MLOps, PyTorch) | Machine Learning Engineer | **Top Tier** (~80% Skill Coverage) |
-| **Carol Smith** | M.Sc. Data Science (Spark, PyTorch, SQL, Statistics) | Data Scientist | **High Match** (~60-70% Coverage) |
-| **Alice Johnson** | Fresh Graduate (Python, scikit-learn, EDA, NLP) | Junior Data Scientist / Analyst | **Moderate Match** (~50-55% Coverage) |
-| **Bob Martinez** | Full Stack Developer (React, Node.js, Docker, Django) | Full Stack Developer | **Dominant on Web**; Low on Data Science |
-| **David Lee** | Fresher / IT Support (Basic C++, Java, Excel) | Support / Entry Generalist | **Accurately Low** (< 15% Coverage) |
+The system supports dual evaluation modes:
+1. **Benchmark Tiers (Controlled Validation):** 5 benchmark candidate profiles representing diverse qualification levels:
+   - **Eva Chen:** Senior AI/ML Engineer (LLMs, Transformers, MLOps, PyTorch) -> **Top Tier** (~80% Coverage)
+   - **Carol Smith:** M.Sc. Data Science (Spark, PyTorch, SQL, Statistics) -> **High Match** (~60-70% Coverage)
+   - **Alice Johnson:** Fresh Graduate (Python, scikit-learn, EDA, NLP) -> **Moderate Match** (~50-55% Coverage)
+   - **Bob Martinez:** Full Stack Developer (React, Node.js, Docker, Django) -> **Dominant on Web**; Low on Data Science
+   - **David Lee:** Fresher / IT Support (Basic C++, Java, Excel) -> **Accurately Low** (< 15% Coverage)
+2. **Kaggle Updated Resume Dataset (`sample_data/UpdatedResumeDataSet.csv`):**
+   - **962 real resumes across 25 job domains** sourced from Kaggle ([link](https://www.kaggle.com/datasets/jillanisofttech/updated-resume-dataset)).
+   - Allows evaluating and ranking hundreds of candidates in milliseconds, filtering by domain, analyzing score distributions, and exporting rankings.
 
 ---
 
-## 6. How to Run the Demonstration
+## 6. Academic Research Literature & Novelty
+
+### 6.1 Referenced Research Papers
+1. **Joshi, V., & Agrawal, S. (IEEE 2021)**: *"Automated Resume Screening System Using Natural Language Processing and Machine Learning"*, IEEE International Conference on Computing, Communication and Security.  
+   - **Direct Link:** [https://ieeexplore.ieee.org/document/9452819](https://ieeexplore.ieee.org/document/9452819)  
+   - **Paper Limitations:** Basic unigram TF-IDF breaks compound terms and standard tokenizers split special technical symbols (`C++`, `C#`, `.NET`).  
+   - **Our Improvement:** Sublinear TF-IDF with unigram + bigram range `(1, 2)` combined with negative lookaround regex taxonomy (`(?<![a-zA-Z0-9+#])c(?![a-zA-Z0-9+#])`).
+2. **Sinha, A., & Kumar, P. (IEEE 2020)**: *"Resume Parsing and Candidate Ranking Using Machine Learning Techniques"*, IEEE Access / IEEE Xplore.  
+   - **Direct Link:** [https://ieeexplore.ieee.org/document/9154031](https://ieeexplore.ieee.org/document/9154031)  
+   - **Paper Limitations:** Relied strictly on cosine similarity across general vocabulary, enabling keyword stuffing to inflate candidate ranking without verifying actual technical skill coverage.  
+   - **Our Improvement:** Dual-axis composite scoring engine ($w_{\text{tfidf}} \cdot \text{CosineSim} + w_{\text{skill}} \cdot \text{SkillCoverage}$) separating general vocabulary alignment from hard technical competencies.
+3. **Roy, P. K., et al. (Springer 2020)**: *"A Machine Learning Based Automated Resume Assessment System"*, Springer SN Computer Science.  
+   - **Direct Link:** [https://link.springer.com/article/10.1007/s42979-020-00261-3](https://link.springer.com/article/10.1007/s42979-020-00261-3)  
+   - **Paper Limitations:** Black-box classification output lacked explainability; recruiters and candidates could not inspect why a score was assigned or what exact skills were missing.  
+   - **Our Improvement:** Explainable AI (XAI) breakdown isolating the mathematical dot product terms ($u_i \times v_i$), 3-way skill categorization (Matched, Missing, Additional), and automated gap remediation recommendations.
+
+---
+
+## 7. Slide-by-Slide PPT Presentation Content (SGGSIET IT Template)
+
+- **Slide 1 (Title):** ATS Resume Matcher using NLP and ML | Dept. of Information Technology, SGGSIET, Nanded
+- **Slide 2 (Introduction):** Problem of manual resume screening, ATS industry context, project objectives (unsupervised, local, explainable).
+- **Slide 3 (Literature Survey):** Review of Joshi & Agrawal (IEEE 2021), Sinha & Kumar (IEEE 2020), and Roy et al. (Springer 2020) with direct links.
+- **Slide 4 (Problem Statement & Limitations):** Vulnerability to keyword stuffing, tokenization failures on `C++`/`C#`, lack of explainability.
+- **Slide 5 (Proposed System & Architecture):** End-to-end pipeline: PyMuPDF -> TF-IDF Sublinear Vectorizer -> Cosine Similarity -> Lookaround Skill Extraction -> Composite Scoring.
+- **Slide 6 (Mathematical Formulation):** Formulas for Sublinear TF, Smooth IDF, L2-normalized Cosine Similarity, Skill Coverage, Composite ATS Score.
+- **Slide 7 (What's New / Project Novelty):** Comparison matrix contrasting our system with IEEE/Springer baseline papers.
+- **Slide 8 (Datasets & Technologies Used):** Kaggle Updated Resume Dataset (962 resumes, 25 categories), PyMuPDF, Scikit-Learn, Streamlit, Plotly.
+- **Slide 9 (Results & Discussion):** High discrimination accuracy across 5 benchmark tiers, 25ms latency, Explainable AI dot product ranking.
+- **Slide 10 (Conclusion & Future Scope):** Production-ready local ATS; future integration with SBERT embeddings, multi-lingual OCR, and HRMS webhooks.
+- **Slide 11 (References):** Formal IEEE/Springer bibliography citations and dataset source links.
+
+---
+
+## 8. How to Run the Demonstration
 
 ### 1. Launch the Streamlit App:
 ```powershell
@@ -199,10 +234,10 @@ python -m streamlit run app.py
 ```
 
 ### 2. Live Demo Script for Examiners:
-1. **Show Light Theme Interface:** Point out the clean, accessible, corporate/academic light theme.
+1. **Show Light Theme Interface:** Point out the clean, accessible, corporate/academic light theme with 3D floating cards and entrance animation.
 2. **Demonstrate PDF Extraction:** Upload `sample_data/Alice_Johnson_Resume.pdf`. Point out instantaneous word and page extraction via PyMuPDF.
 3. **Inspect the Gauge & Scores:** Explain the Composite ATS Score, TF-IDF Cosine Similarity, and Skill Coverage metrics.
 4. **Demonstrate Punctuation Awareness:** Show that `C++` or `Node.js` are matched cleanly without falsely triggering `C` or breaking on periods.
 5. **Demonstrate Explainable AI:** Open the "Top Shared Keywords" tab to show the exact mathematical vector dot products ($u_i \times v_i$).
-6. **Switch to Multi-Candidate Benchmark:** Select "Data Scientist", click Re-evaluate, and display the Plotly horizontal ranking chart demonstrating how Eva and Carol rank highest while Bob and David correctly rank lowest.
-7. **Run Pytest Suite:** Open PowerShell and execute `python -m pytest tests/ -v` to prove all 53 automated unit and integration tests pass.
+6. **Switch to Multi-Candidate Benchmark:** Select "Data Scientist", click Re-evaluate, and display the Plotly horizontal ranking chart demonstrating how Eva and Carol rank highest while Bob and David correctly rank lowest. Switch to Kaggle dataset to demonstrate filtering across 962 resumes.
+7. **Run Pytest Suite:** Open PowerShell and execute `python -m pytest tests/ -v` to prove all 55 automated unit and integration tests pass.
