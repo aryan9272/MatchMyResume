@@ -47,7 +47,7 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------------------------------
-# Light Theme with Floating Cards & 3D Opening Animation CSS
+# Light Theme with Floating Cards & 3D Interactive Hover Effects CSS
 # Strict 3-4 Color Palette: #f8fafc (Canvas), #ffffff (Card), #2563eb (Royal Blue), #06b6d4 (Cyan), #0f172a (Slate)
 # ---------------------------------------------------------------------------
 LIGHT_FLOATING_THEME_CSS = """
@@ -129,7 +129,7 @@ LIGHT_FLOATING_THEME_CSS = """
     .hero-floating-container {
         animation: openingReveal3D 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         transform-style: preserve-3d;
-        background: rgba(255, 255, 255, 0.88);
+        background: rgba(255, 255, 255, 0.92);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(226, 232, 240, 0.95);
@@ -143,6 +143,18 @@ LIGHT_FLOATING_THEME_CSS = """
         position: relative;
         z-index: 1;
         overflow: hidden;
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                    box-shadow 0.35s ease,
+                    border-color 0.35s ease;
+    }
+
+    .hero-floating-container:hover {
+        transform: translateY(-3px) scale(1.004);
+        border-color: rgba(37, 99, 235, 0.35);
+        box-shadow: 
+            0 24px 48px -10px rgba(37, 99, 235, 0.12),
+            0 10px 20px -4px rgba(15, 23, 42, 0.04),
+            inset 0 1px 0 rgba(255, 255, 255, 1);
     }
 
     .hero-floating-container::before {
@@ -153,6 +165,11 @@ LIGHT_FLOATING_THEME_CSS = """
         right: 0;
         height: 3px;
         background: linear-gradient(90deg, #2563eb, #06b6d4, #2563eb);
+        transition: height 0.3s ease;
+    }
+
+    .hero-floating-container:hover::before {
+        height: 4px;
     }
 
     .large-website-title {
@@ -165,6 +182,11 @@ LIGHT_FLOATING_THEME_CSS = """
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         display: inline-block;
+        transition: transform 0.3s ease;
+    }
+
+    .large-website-title:hover {
+        transform: scale(1.01);
     }
 
     .hero-subtitle {
@@ -181,21 +203,29 @@ LIGHT_FLOATING_THEME_CSS = """
         background: rgba(37, 99, 235, 0.08);
         color: #2563eb;
         border: 1px solid rgba(37, 99, 235, 0.25);
-        padding: 4px 12px;
+        padding: 5px 14px;
         border-radius: 9999px;
-        font-size: 0.8rem;
+        font-size: 0.82rem;
         font-weight: 600;
         letter-spacing: 0.04em;
         text-transform: uppercase;
+        transition: all 0.25s ease;
+    }
+
+    .hero-tag:hover {
+        background: rgba(37, 99, 235, 0.14);
+        border-color: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
     }
 
     /* =======================================================================
-       3. FLOATING CARDS & 3D HOVER ELEVATION
+       3. FLOATING CARDS & 3D HOVER ELEVATION WITH LIGHT SWEEP
        ======================================================================= */
     .floating-card {
-        background: rgba(255, 255, 255, 0.92) !important;
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(226, 232, 240, 0.95) !important;
         border-radius: 16px;
         padding: 22px 24px;
@@ -203,17 +233,47 @@ LIGHT_FLOATING_THEME_CSS = """
         box-shadow: 
             0 10px 25px -5px rgba(15, 23, 42, 0.05),
             0 8px 10px -6px rgba(15, 23, 42, 0.02),
-            inset 0 1px 0 rgba(255, 255, 255, 0.85);
-        transition: all 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+                    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+                    border-color 0.35s ease !important;
         transform-style: preserve-3d;
+        position: relative;
+        overflow: hidden;
     }
 
     .floating-card:hover {
-        transform: translateY(-5px) perspective(1000px) rotateX(1.5deg) scale(1.008);
-        border-color: rgba(37, 99, 235, 0.4) !important;
+        transform: translateY(-6px) perspective(1000px) rotateX(1.5deg) scale(1.012) !important;
+        border-color: rgba(37, 99, 235, 0.45) !important;
         box-shadow: 
-            0 20px 35px -8px rgba(37, 99, 235, 0.12),
-            0 1px 3px rgba(15, 23, 42, 0.06);
+            0 22px 42px -10px rgba(37, 99, 235, 0.18),
+            0 0 0 1px rgba(37, 99, 235, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+    }
+
+    /* Subtle Light Glint Sweep on Card Hover */
+    .floating-card::after {
+        content: "";
+        position: absolute;
+        top: -60%;
+        left: -80%;
+        width: 220%;
+        height: 220%;
+        background: linear-gradient(
+            60deg,
+            transparent 40%,
+            rgba(255, 255, 255, 0.7) 50%,
+            transparent 60%
+        );
+        transform: rotate(25deg);
+        transition: all 0.75s ease;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .floating-card:hover::after {
+        left: 40%;
+        opacity: 1;
     }
 
     .floating-metric-title {
@@ -223,6 +283,11 @@ LIGHT_FLOATING_THEME_CSS = """
         text-transform: uppercase;
         letter-spacing: 0.06em;
         margin-bottom: 6px;
+        transition: color 0.25s ease;
+    }
+
+    .floating-card:hover .floating-metric-title {
+        color: #2563eb;
     }
 
     .floating-metric-value {
@@ -233,6 +298,11 @@ LIGHT_FLOATING_THEME_CSS = """
         background: linear-gradient(135deg, #0f172a 40%, #2563eb 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        transition: transform 0.25s ease;
+    }
+
+    .floating-card:hover .floating-metric-value {
+        transform: scale(1.02);
     }
 
     .floating-metric-sub {
@@ -252,6 +322,7 @@ LIGHT_FLOATING_THEME_CSS = """
         border-radius: 8px;
         font-weight: 700;
         font-size: 0.82rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .badge-tier-good {
         display: inline-block;
@@ -262,6 +333,7 @@ LIGHT_FLOATING_THEME_CSS = """
         border-radius: 8px;
         font-weight: 700;
         font-size: 0.82rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .badge-tier-mod {
         display: inline-block;
@@ -272,6 +344,7 @@ LIGHT_FLOATING_THEME_CSS = """
         border-radius: 8px;
         font-weight: 700;
         font-size: 0.82rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .badge-tier-low {
         display: inline-block;
@@ -282,84 +355,201 @@ LIGHT_FLOATING_THEME_CSS = """
         border-radius: 8px;
         font-weight: 700;
         font-size: 0.82rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    /* Skill Tags */
+    .badge-tier-high:hover, .badge-tier-good:hover, .badge-tier-mod:hover, .badge-tier-low:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+    }
+
+    /* Skill Tags with Spring Hover Feedback */
     .skill-tag-matched {
         display: inline-block;
         background: #ecfdf5;
         color: #065f46;
         border: 1px solid #a7f3d0;
-        padding: 4px 10px;
-        border-radius: 6px;
+        padding: 5px 11px;
+        border-radius: 8px;
         font-size: 0.82rem;
         font-weight: 600;
-        margin: 3px 2px;
+        margin: 4px 3px;
         box-shadow: 0 1px 2px rgba(16, 185, 129, 0.08);
+        transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    box-shadow 0.22s ease,
+                    background-color 0.2s ease,
+                    border-color 0.2s ease !important;
+        cursor: pointer;
+        user-select: none;
     }
+    .skill-tag-matched:hover {
+        transform: translateY(-3px) scale(1.08) !important;
+        background: #d1fae5 !important;
+        border-color: #34d399 !important;
+        box-shadow: 0 6px 14px rgba(16, 185, 129, 0.28) !important;
+    }
+
     .skill-tag-missing {
         display: inline-block;
         background: #fef2f2;
         color: #991b1b;
         border: 1px solid #fecaca;
-        padding: 4px 10px;
-        border-radius: 6px;
+        padding: 5px 11px;
+        border-radius: 8px;
         font-size: 0.82rem;
         font-weight: 600;
-        margin: 3px 2px;
+        margin: 4px 3px;
+        box-shadow: 0 1px 2px rgba(239, 68, 68, 0.08);
+        transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    box-shadow 0.22s ease,
+                    background-color 0.2s ease,
+                    border-color 0.2s ease !important;
+        cursor: pointer;
+        user-select: none;
     }
+    .skill-tag-missing:hover {
+        transform: translateY(-3px) scale(1.08) !important;
+        background: #fee2e2 !important;
+        border-color: #f87171 !important;
+        box-shadow: 0 6px 14px rgba(239, 68, 68, 0.28) !important;
+    }
+
     .skill-tag-additional {
         display: inline-block;
         background: #f0f9ff;
         color: #075985;
         border: 1px solid #bae6fd;
-        padding: 4px 10px;
-        border-radius: 6px;
+        padding: 5px 11px;
+        border-radius: 8px;
         font-size: 0.82rem;
         font-weight: 600;
-        margin: 3px 2px;
+        margin: 4px 3px;
+        box-shadow: 0 1px 2px rgba(6, 182, 212, 0.08);
+        transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    box-shadow 0.22s ease,
+                    background-color 0.2s ease,
+                    border-color 0.2s ease !important;
+        cursor: pointer;
+        user-select: none;
+    }
+    .skill-tag-additional:hover {
+        transform: translateY(-3px) scale(1.08) !important;
+        background: #e0f2fe !important;
+        border-color: #38bdf8 !important;
+        box-shadow: 0 6px 14px rgba(6, 182, 212, 0.28) !important;
+    }
+
+    /* Actionable Recommendation Cards */
+    .rec-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-left: 4px solid #2563eb;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+        font-size: 0.92rem;
+        color: #1e293b;
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                    box-shadow 0.25s ease,
+                    border-left-color 0.25s ease !important;
+    }
+    .rec-card:hover {
+        transform: translateX(6px) translateY(-1px) !important;
+        border-left-color: #06b6d4 !important;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12) !important;
+        background: #fcfdfe !important;
     }
 
     /* =======================================================================
-       4. SIDEBAR & INPUT ELEMENTS
+       4. SIDEBAR & INPUT ELEMENTS WITH INTERACTIVE HOVER
        ======================================================================= */
     section[data-testid="stSidebar"] {
         background-color: #ffffff !important;
         border-right: 1px solid #e2e8f0 !important;
     }
 
+    /* Sidebar Navigation Menu Radio Items styled as Modern Interactive Cards */
+    div[data-testid="stSidebar"] div[role="radiogroup"] label {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        padding: 11px 16px !important;
+        margin-bottom: 10px !important;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03) !important;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+    div[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
+        background: #eff6ff !important;
+        border-color: #93c5fd !important;
+        transform: translateX(5px) translateY(-1px) !important;
+        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.12) !important;
+    }
+
+    /* Text Area & Input Hover Feedback */
     .stTextArea textarea {
         background: #ffffff !important;
         color: #0f172a !important;
         border: 1px solid #cbd5e1 !important;
-        border-radius: 10px !important;
+        border-radius: 12px !important;
         font-family: ui-monospace, Menlo, Monaco, Consolas, monospace !important;
         font-size: 0.86rem !important;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+    }
+    .stTextArea textarea:hover {
+        border-color: #94a3b8 !important;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
     }
     .stTextArea textarea:focus {
         border-color: #2563eb !important;
-        box-shadow: 0 0 12px rgba(37, 99, 235, 0.2) !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18) !important;
     }
 
-    /* Button Styling */
-    .stButton>button {
+    /* File Uploader Hover Feedback */
+    div[data-testid="stFileUploader"] section {
+        background: #ffffff !important;
+        border: 2px dashed #cbd5e1 !important;
+        border-radius: 14px !important;
+        padding: 18px !important;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    div[data-testid="stFileUploader"] section:hover {
+        border-color: #2563eb !important;
+        background: rgba(37, 99, 235, 0.03) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 10px 24px -4px rgba(37, 99, 235, 0.12) !important;
+    }
+
+    /* Button Styling & Glow Hover */
+    .stButton>button, div[data-testid="stDownloadButton"]>button {
         background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%) !important;
         color: #ffffff !important;
         border: none !important;
-        border-radius: 10px !important;
-        padding: 12px 24px !important;
+        border-radius: 12px !important;
+        padding: 13px 28px !important;
         font-weight: 700 !important;
         font-size: 1rem !important;
-        letter-spacing: 0.02em !important;
-        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25) !important;
-        transition: all 0.25s ease !important;
+        letter-spacing: 0.03em !important;
+        box-shadow: 0 8px 22px -4px rgba(37, 99, 235, 0.35) !important;
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                    box-shadow 0.25s ease,
+                    filter 0.25s ease !important;
+        cursor: pointer !important;
     }
-    .stButton>button:hover {
-        transform: translateY(-2px) scale(1.008) !important;
-        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35) !important;
+    .stButton>button:hover, div[data-testid="stDownloadButton"]>button:hover {
+        transform: translateY(-3px) scale(1.015) !important;
+        box-shadow: 0 14px 30px -4px rgba(37, 99, 235, 0.45), 0 0 0 2px rgba(6, 182, 212, 0.25) !important;
+        filter: brightness(1.06) !important;
+    }
+    .stButton>button:active, div[data-testid="stDownloadButton"]>button:active {
+        transform: translateY(1px) scale(0.99) !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
     }
 
-    /* Tabs Styling */
+    /* Tabs Styling & Hover */
     .stTabs [data-baseweb="tab-list"] {
         gap: 10px;
         background-color: transparent;
@@ -370,12 +560,33 @@ LIGHT_FLOATING_THEME_CSS = """
         font-weight: 600;
         font-size: 0.92rem;
         padding: 10px 18px;
-        border-radius: 8px 8px 0 0;
+        border-radius: 10px 10px 0 0 !important;
+        transition: all 0.22s ease !important;
+    }
+    .stTabs [data-baseweb="tab"]:hover {
+        color: #2563eb !important;
+        background: rgba(37, 99, 235, 0.05) !important;
     }
     .stTabs [aria-selected="true"] {
         color: #2563eb !important;
         border-bottom: 2px solid #2563eb !important;
-        background: rgba(37, 99, 235, 0.04) !important;
+        background: rgba(37, 99, 235, 0.06) !important;
+    }
+
+    /* Expander Details Hover */
+    div[data-testid="stExpander"] details summary {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        padding: 12px 18px !important;
+        font-weight: 600 !important;
+        transition: all 0.25s ease !important;
+    }
+    div[data-testid="stExpander"] details summary:hover {
+        border-color: #2563eb !important;
+        background: #f8fafc !important;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08) !important;
+        transform: translateY(-1px) !important;
     }
 </style>
 
@@ -645,7 +856,6 @@ view_mode = st.sidebar.radio(
     options=[
         "🎯 Resume Matcher & Gap Analysis",
         "📊 Candidate Benchmark & Ranking",
-        "🔬 Model Transparency & Viva Guide",
     ],
     index=0,
 )
@@ -682,17 +892,6 @@ st.sidebar.markdown("### 📚 Quick Candidate Pre-Loader")
 resumes_df = get_sample_resumes()
 candidate_names = ["(Upload PDF or Paste Custom)"] + resumes_df["name"].tolist()
 selected_candidate = st.sidebar.selectbox("Choose Sample Profile:", options=candidate_names, index=0)
-
-st.sidebar.markdown("---")
-st.sidebar.markdown(
-    """
-    **Architecture Specs:**
-    - Theme: *Light Mode with 3D Floating Cards*
-    - Engine: *Unsupervised Vector Space Model*
-    - Tokenizer: *Punctuation-Safe Lookaround*
-    - Parser: *PyMuPDF Digital Text Layer*
-    """
-)
 
 
 # ---------------------------------------------------------------------------
@@ -1005,7 +1204,7 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
                         "document length, and vocabulary alignment."
                     )
                     for rec in match_result.recommendations:
-                        st.markdown(f"- {rec}")
+                        st.markdown(f'<div class="rec-card">💡 {rec}</div>', unsafe_allow_html=True)
 
                 with tab4:
                     st.markdown("#### Technical Domain Skill Distribution")
@@ -1028,6 +1227,154 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
                     with raw_col2:
                         st.caption(f"**Job Description ({match_result.jd_word_count} words)**")
                         st.text_area("JD Dump", jd_input, height=220, disabled=True)
+
+    # Academic & Viva Voce Accordion (Clean, Collapsible at Page Bottom)
+    st.markdown("<br>", unsafe_allow_html=True)
+    with st.expander("🔬 View Model Transparency, Mathematical Derivations & Viva Guide (16 Q&As)", expanded=False):
+        t_tab1, t_tab2, t_tab3 = st.tabs(
+            [
+                "📐 Mathematical Formulation",
+                "🛡️ Punctuation-Aware Architecture",
+                "🎓 15+ Viva Questions & Answers",
+            ]
+        )
+
+        with t_tab1:
+            st.markdown("### 1. Vector Space Model (VSM) & TF-IDF Formulation")
+            st.markdown(
+                r"""
+                In an unsupervised Vector Space Model, each document (Resume $d_1$ and Job Description $d_2$)
+                is mapped to a high-dimensional sparse vector $\mathbf{v} \in \mathbb{R}^{|V|}$, where $|V|$
+                is the shared vocabulary size of unigrams and bigrams.
+
+                #### Term Frequency with Sublinear Scaling:
+                $$\text{tf}_{\text{scaled}}(t, d) = \begin{cases} 1 + \ln(\text{tf}(t, d)) & \text{if } \text{tf}(t, d) > 0 \\ 0 & \text{otherwise} \end{cases}$$
+
+                #### Inverse Document Frequency (Smooth IDF):
+                $$\text{idf}(t) = \ln\left(\frac{1 + n}{1 + \text{df}(t)}\right) + 1$$
+
+                #### Composite TF-IDF Weight:
+                $$\text{tfidf}(t, d) = \text{tf}_{\text{scaled}}(t, d) \times \text{idf}(t)$$
+
+                #### Cosine Similarity Metric:
+                $$\text{Cosine Similarity}(\mathbf{u}, \mathbf{v}) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2} = \sum_{i=1}^{|V|} u_i v_i$$
+                """
+            )
+
+        with t_tab2:
+            st.markdown("### Punctuation-Aware Skill Extraction Architecture")
+            st.markdown(
+                """
+                Standard regex tokenizers (`\\w+`) strip punctuation, reducing `C++` and `C#` into `c`,
+                causing false matches on the single letter 'c'.
+
+                #### Solution Implemented in `skills.py`:
+                - Negative Lookaround boundaries:
+                  `(?<![a-zA-Z0-9+#])c(?![a-zA-Z0-9+#])`
+                - Preserves `.NET`, `Node.js`, `CI/CD`, and `scikit-learn` cleanly.
+                """
+            )
+
+        with t_tab3:
+            st.markdown("### 🎓 Comprehensive Viva Examination Questions & Model Answers")
+
+            viva_qa = [
+                (
+                    "Q1: Why is an unsupervised TF-IDF Vector Space Model used instead of a supervised classifier?",
+                    "Supervised learning requires thousands of labeled (Resume, Job Description, Hired/Rejected) pairs. "
+                    "Such datasets are rarely publicly available, suffer from severe historical hiring bias, and don't generalize "
+                    "to new, unseen job descriptions. An unsupervised Vector Space Model directly measures semantic and textual "
+                    "congruence between any arbitrary resume and job posting without requiring training labels or hallucinated parameters.",
+                ),
+                (
+                    "Q2: What is the mathematical definition and role of TF-IDF?",
+                    "TF-IDF (Term Frequency - Inverse Document Frequency) reflects how important a word is to a document relative to a corpus. "
+                    "TF measures local term frequency with sublinear scaling (1 + log(tf)). IDF penalizes pervasive words that appear across all "
+                    "documents (e.g., 'experience', 'work', 'skills') while rewarding distinctive domain terms (e.g., 'PyTorch', 'Kubernetes').",
+                ),
+                (
+                    "Q3: Why is Cosine Similarity preferred over Euclidean Distance for text comparison?",
+                    "Euclidean distance is sensitive to document length. If a resume is 3 pages long and another is 1 page long, their Euclidean "
+                    "distance will be large even if they discuss identical topics. Cosine similarity evaluates the angle between vectors rather than "
+                    "their magnitudes, making it completely length-invariant.",
+                ),
+                (
+                    "Q4: What is sublinear TF scaling and why is it important?",
+                    "Sublinear TF scaling replaces raw term frequency tf with 1 + ln(tf). In resume screening, a candidate who writes 'Python' "
+                    "20 times in a keyword-stuffing attempt should not receive 20 times the weight of a candidate who writes it once. "
+                    "Log scaling diminishes the marginal return of repeated words.",
+                ),
+                (
+                    "Q5: How does the system handle punctuation in technical terms like C++, C#, and .NET?",
+                    "Standard tokenizers strip punctuation, reducing C++ and C# to 'c'. Our engine uses a specialized regex pattern with negative "
+                    "lookaheads and lookbehinds: '(?<![a-zA-Z0-9+#])c(?![a-zA-Z0-9+#])'. This ensures 'C' only matches when isolated, "
+                    "and never matches inside 'C++' or 'C#'.",
+                ),
+                (
+                    "Q6: Why include bigrams (1, 2) in the TF-IDF vectorizer?",
+                    "Unigrams alone cannot distinguish crucial phrases. For example, 'machine' and 'learning' separately have very different meanings "
+                    "than the compound bigram 'machine learning'. Similarly, bigrams capture 'random forest', 'data science', and 'deep learning'.",
+                ),
+                (
+                    "Q7: Why does the system maintain both TF-IDF similarity and a separate Skill Coverage score?",
+                    "TF-IDF measures overall textual and stylistic alignment across all vocabulary. However, hiring managers have explicit non-negotiable "
+                    "skills (e.g., 'Must have Docker and SQL'). The Skill Coverage metric explicitly checks for the presence of required technical skills "
+                    "regardless of where or how frequently they appear.",
+                ),
+                (
+                    "Q8: What library is used for PDF text extraction and why?",
+                    "We use PyMuPDF (fitz), which is one of the fastest and most accurate C-based PDF parsing engines available for Python. It directly "
+                    "accesses digital text streams, character bounding boxes, and metadata without spawning external sub-processes.",
+                ),
+                (
+                    "Q9: How does the system handle corrupt, password-protected, or scanned PDFs?",
+                    "pdf_parser.py inspects doc.needs_pass for encryption, catches stream corruption via fitz.open exceptions, and verifies that the "
+                    "extracted character count is non-trivial. If a PDF contains only scanned images (zero text layer), it returns a clear diagnostic "
+                    "warning recommending an OCR preprocessor.",
+                ),
+                (
+                    "Q10: What are stop words and why are they removed?",
+                    "Stop words are high-frequency grammatical words like 'the', 'is', 'at', 'which'. Because they carry virtually no domain-specific "
+                    "discriminative information, removing them reduces vocabulary dimensionality and prevents common words from skewing cosine similarity.",
+                ),
+                (
+                    "Q11: What are the main limitations of pure TF-IDF matching?",
+                    "TF-IDF relies on exact lexical matching. It cannot recognize synonyms (e.g., 'software engineer' vs 'developer') or polysemy (e.g., "
+                    "'Apple' the fruit vs 'Apple' the company). Dense semantic embeddings (like Sentence-BERT) resolve this by capturing latent semantics.",
+                ),
+                (
+                    "Q12: How could this project be extended to Sentence-BERT or Word2Vec?",
+                    "By replacing or complementing the sparse TF-IDF vectors with dense embeddings from pre-trained models (e.g., all-MiniLM-L6-v2). "
+                    "Sentences from the resume and JD would be passed through transformer encoders to produce 384-dimensional dense vectors, "
+                    "followed by cosine similarity in semantic space.",
+                ),
+                (
+                    "Q13: What is the computational complexity of TF-IDF vectorization and cosine similarity?",
+                    "For two documents with average word count L and joint vocabulary V, building the vocabulary takes O(L) time. Fitting the matrix takes "
+                    "O(L) time. Computing the cosine similarity takes O(|V|) time, where |V| <= 2L. Overall time complexity is linear O(L), executing in under 20ms.",
+                ),
+                (
+                    "Q14: How does Explainable AI (XAI) work in this dashboard?",
+                    "Because cosine similarity is the dot product of L2-normalized vectors (sum u_i * v_i), each term's contribution is simply the product "
+                    "u_i * v_i. We sort these products descendingly to display the exact top keywords that drove the match score.",
+                ),
+                (
+                    "Q15: How do real corporate ATS platforms differ from this academic project?",
+                    "Enterprise ATS tools (e.g., Taleo, Workday, Greenhouse) integrate with relational databases, applicant workflow pipelines, OCR engines, "
+                    "compliance tracking (EEOC), email automation, and sometimes proprietary machine learning models. This project focuses on the core "
+                    "information retrieval and NLP matching component.",
+                ),
+                (
+                    "Q16: How can algorithmic bias occur in automated resume screening and how can it be mitigated?",
+                    "Bias enters if models are trained on historical hiring data that favored specific genders, ethnicities, or elite colleges. Our unsupervised "
+                    "baseline avoids this because it computes objective lexical overlap between the job requirements and candidate text, without any demographic "
+                    "features or historical training weights.",
+                ),
+            ]
+
+            for q, a in viva_qa:
+                with st.expander(f"📌 {q}"):
+                    st.write(a)
 
 
 # ---------------------------------------------------------------------------
@@ -1235,165 +1582,3 @@ elif view_mode == "📊 Candidate Benchmark & Ranking":
             key="dl_kaggle_csv",
         )
 
-
-# ---------------------------------------------------------------------------
-# VIEW 3: Model Transparency & Viva Guide
-# ---------------------------------------------------------------------------
-elif view_mode == "🔬 Model Transparency & Viva Guide":
-
-    st.markdown(
-        """
-        <div class="hero-floating-container">
-            <div class="hero-subtitle">Academic Documentation & Viva Voce Guide</div>
-            <h1 class="large-website-title">MODEL TRANSPARENCY</h1>
-            <br>
-            <span class="hero-tag">⚡ Mathematical Derivations • Zero Black-Box • 16 Viva Questions</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    t_tab1, t_tab2, t_tab3 = st.tabs(
-        [
-            "📐 Mathematical Formulation",
-            "🛡️ Punctuation-Aware Architecture",
-            "🎓 15+ Viva Questions & Answers",
-        ]
-    )
-
-    with t_tab1:
-        st.markdown("### 1. Vector Space Model (VSM) & TF-IDF Formulation")
-        st.markdown(
-            r"""
-            In an unsupervised Vector Space Model, each document (Resume $d_1$ and Job Description $d_2$)
-            is mapped to a high-dimensional sparse vector $\mathbf{v} \in \mathbb{R}^{|V|}$, where $|V|$
-            is the shared vocabulary size of unigrams and bigrams.
-
-            #### Term Frequency with Sublinear Scaling:
-            $$\text{tf}_{\text{scaled}}(t, d) = \begin{cases} 1 + \ln(\text{tf}(t, d)) & \text{if } \text{tf}(t, d) > 0 \\ 0 & \text{otherwise} \end{cases}$$
-
-            #### Inverse Document Frequency (Smooth IDF):
-            $$\text{idf}(t) = \ln\left(\frac{1 + n}{1 + \text{df}(t)}\right) + 1$$
-
-            #### Composite TF-IDF Weight:
-            $$\text{tfidf}(t, d) = \text{tf}_{\text{scaled}}(t, d) \times \text{idf}(t)$$
-
-            #### Cosine Similarity Metric:
-            $$\text{Cosine Similarity}(\mathbf{u}, \mathbf{v}) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2} = \sum_{i=1}^{|V|} u_i v_i$$
-            """
-        )
-
-    with t_tab2:
-        st.markdown("### Punctuation-Aware Skill Extraction Architecture")
-        st.markdown(
-            """
-            Standard regex tokenizers (`\\w+`) strip punctuation, reducing `C++` and `C#` into `c`,
-            causing false matches on the single letter 'c'.
-
-            #### Solution Implemented in `skills.py`:
-            - Negative Lookaround boundaries:
-              `(?<![a-zA-Z0-9+#])c(?![a-zA-Z0-9+#])`
-            - Preserves `.NET`, `Node.js`, `CI/CD`, and `scikit-learn` cleanly.
-            """
-        )
-
-    with t_tab3:
-        st.markdown("### 🎓 Comprehensive Viva Examination Questions & Model Answers")
-
-        viva_qa = [
-            (
-                "Q1: Why is an unsupervised TF-IDF Vector Space Model used instead of a supervised classifier?",
-                "Supervised learning requires thousands of labeled (Resume, Job Description, Hired/Rejected) pairs. "
-                "Such datasets are rarely publicly available, suffer from severe historical hiring bias, and don't generalize "
-                "to new, unseen job descriptions. An unsupervised Vector Space Model directly measures semantic and textual "
-                "congruence between any arbitrary resume and job posting without requiring training labels or hallucinated parameters.",
-            ),
-            (
-                "Q2: What is the mathematical definition and role of TF-IDF?",
-                "TF-IDF (Term Frequency - Inverse Document Frequency) reflects how important a word is to a document relative to a corpus. "
-                "TF measures local term frequency with sublinear scaling (1 + log(tf)). IDF penalizes pervasive words that appear across all "
-                "documents (e.g., 'experience', 'work', 'skills') while rewarding distinctive domain terms (e.g., 'PyTorch', 'Kubernetes').",
-            ),
-            (
-                "Q3: Why is Cosine Similarity preferred over Euclidean Distance for text comparison?",
-                "Euclidean distance is sensitive to document length. If a resume is 3 pages long and another is 1 page long, their Euclidean "
-                "distance will be large even if they discuss identical topics. Cosine similarity evaluates the angle between vectors rather than "
-                "their magnitudes, making it completely length-invariant.",
-            ),
-            (
-                "Q4: What is sublinear TF scaling and why is it important?",
-                "Sublinear TF scaling replaces raw term frequency tf with 1 + ln(tf). In resume screening, a candidate who writes 'Python' "
-                "20 times in a keyword-stuffing attempt should not receive 20 times the weight of a candidate who writes it once. "
-                "Log scaling diminishes the marginal return of repeated words.",
-            ),
-            (
-                "Q5: How does the system handle punctuation in technical terms like C++, C#, and .NET?",
-                "Standard tokenizers strip punctuation, reducing C++ and C# to 'c'. Our engine uses a specialized regex pattern with negative "
-                "lookaheads and lookbehinds: '(?<![a-zA-Z0-9+#])c(?![a-zA-Z0-9+#])'. This ensures 'C' only matches when isolated, "
-                "and never matches inside 'C++' or 'C#'.",
-            ),
-            (
-                "Q6: Why include bigrams (1, 2) in the TF-IDF vectorizer?",
-                "Unigrams alone cannot distinguish crucial phrases. For example, 'machine' and 'learning' separately have very different meanings "
-                "than the compound bigram 'machine learning'. Similarly, bigrams capture 'random forest', 'data science', and 'deep learning'.",
-            ),
-            (
-                "Q7: Why does the system maintain both TF-IDF similarity and a separate Skill Coverage score?",
-                "TF-IDF measures overall textual and stylistic alignment across all vocabulary. However, hiring managers have explicit non-negotiable "
-                "skills (e.g., 'Must have Docker and SQL'). The Skill Coverage metric explicitly checks for the presence of required technical skills "
-                "regardless of where or how frequently they appear.",
-            ),
-            (
-                "Q8: What library is used for PDF text extraction and why?",
-                "We use PyMuPDF (fitz), which is one of the fastest and most accurate C-based PDF parsing engines available for Python. It directly "
-                "accesses digital text streams, character bounding boxes, and metadata without spawning external sub-processes.",
-            ),
-            (
-                "Q9: How does the system handle corrupt, password-protected, or scanned PDFs?",
-                "pdf_parser.py inspects doc.needs_pass for encryption, catches stream corruption via fitz.open exceptions, and verifies that the "
-                "extracted character count is non-trivial. If a PDF contains only scanned images (zero text layer), it returns a clear diagnostic "
-                "warning recommending an OCR preprocessor.",
-            ),
-            (
-                "Q10: What are stop words and why are they removed?",
-                "Stop words are high-frequency grammatical words like 'the', 'is', 'at', 'which'. Because they carry virtually no domain-specific "
-                "discriminative information, removing them reduces vocabulary dimensionality and prevents common words from skewing cosine similarity.",
-            ),
-            (
-                "Q11: What are the main limitations of pure TF-IDF matching?",
-                "TF-IDF relies on exact lexical matching. It cannot recognize synonyms (e.g., 'software engineer' vs 'developer') or polysemy (e.g., "
-                "'Apple' the fruit vs 'Apple' the company). Dense semantic embeddings (like Sentence-BERT) resolve this by capturing latent semantics.",
-            ),
-            (
-                "Q12: How could this project be extended to Sentence-BERT or Word2Vec?",
-                "By replacing or complementing the sparse TF-IDF vectors with dense embeddings from pre-trained models (e.g., all-MiniLM-L6-v2). "
-                "Sentences from the resume and JD would be passed through transformer encoders to produce 384-dimensional dense vectors, "
-                "followed by cosine similarity in semantic space.",
-            ),
-            (
-                "Q13: What is the computational complexity of TF-IDF vectorization and cosine similarity?",
-                "For two documents with average word count L and joint vocabulary V, building the vocabulary takes O(L) time. Fitting the matrix takes "
-                "O(L) time. Computing the cosine similarity takes O(|V|) time, where |V| <= 2L. Overall time complexity is linear O(L), executing in under 20ms.",
-            ),
-            (
-                "Q14: How does Explainable AI (XAI) work in this dashboard?",
-                "Because cosine similarity is the dot product of L2-normalized vectors (sum u_i * v_i), each term's contribution is simply the product "
-                "u_i * v_i. We sort these products descendingly to display the exact top keywords that drove the match score.",
-            ),
-            (
-                "Q15: How do real corporate ATS platforms differ from this academic project?",
-                "Enterprise ATS tools (e.g., Taleo, Workday, Greenhouse) integrate with relational databases, applicant workflow pipelines, OCR engines, "
-                "compliance tracking (EEOC), email automation, and sometimes proprietary machine learning models. This project focuses on the core "
-                "information retrieval and NLP matching component.",
-            ),
-            (
-                "Q16: How can algorithmic bias occur in automated resume screening and how can it be mitigated?",
-                "Bias enters if models are trained on historical hiring data that favored specific genders, ethnicities, or elite colleges. Our unsupervised "
-                "baseline avoids this because it computes objective lexical overlap between the job requirements and candidate text, without any demographic "
-                "features or historical training weights.",
-            ),
-        ]
-
-        for q, a in viva_qa:
-            with st.expander(f"📌 {q}"):
-                st.write(a)
