@@ -17,6 +17,8 @@ from __future__ import annotations
 
 import io
 from pathlib import Path
+import base64
+from pathlib import Path
 from typing import Dict, List, Optional
 
 import pandas as pd
@@ -37,11 +39,23 @@ from pdf_parser import extract_text_from_pdf, parse_uploaded_pdf
 from skills import TECH_SKILLS, categorize_skills, get_skill_category
 
 # ---------------------------------------------------------------------------
-# Streamlit Page Configuration
+# Brand Assets & Base64 Loading
+# ---------------------------------------------------------------------------
+LOGO_PATH = Path("assets/logo.png")
+FAVICON_PATH = Path("assets/favicon.png")
+
+if LOGO_PATH.exists():
+    with open(LOGO_PATH, "rb") as _f:
+        LOGO_B64 = base64.b64encode(_f.read()).decode("utf-8")
+else:
+    LOGO_B64 = ""
+
+# ---------------------------------------------------------------------------
+# Streamlit Page Configuration with Custom Favicon
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="MATCH MY RESUME | 3D ATS Analyzer",
-    page_icon="⚡",
+    page_title="MatchMyResume | ATS Resume Matcher & NLP Analyzer",
+    page_icon=str(FAVICON_PATH) if FAVICON_PATH.exists() else "📄",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -588,6 +602,155 @@ LIGHT_FLOATING_THEME_CSS = """
         box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08) !important;
         transform: translateY(-1px) !important;
     }
+    /* Top Brand Navigation Bar */
+    .top-brand-navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(226, 232, 240, 0.95);
+        border-radius: 16px;
+        padding: 12px 22px;
+        margin-bottom: 22px;
+        box-shadow: 
+            0 8px 20px -4px rgba(15, 23, 42, 0.04),
+            0 4px 6px -2px rgba(15, 23, 42, 0.02);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .top-brand-navbar:hover {
+        transform: translateY(-2px);
+        border-color: rgba(37, 99, 235, 0.35);
+        box-shadow: 
+            0 14px 28px -6px rgba(37, 99, 235, 0.12),
+            0 4px 10px -2px rgba(15, 23, 42, 0.04);
+    }
+    .brand-logo-group {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        text-decoration: none;
+    }
+    .brand-logo-img {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .top-brand-navbar:hover .brand-logo-img {
+        transform: rotate(6deg) scale(1.08);
+    }
+    .brand-title-wrap {
+        display: flex;
+        flex-direction: column;
+    }
+    .brand-name-main {
+        font-size: 1.5rem;
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        color: #0f172a;
+        line-height: 1.1;
+    }
+    .brand-name-accent {
+        color: #2563eb;
+    }
+    .brand-tagline {
+        font-size: 0.76rem;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+    .brand-status-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #065f46;
+        transition: all 0.25s ease;
+    }
+    .brand-status-badge:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+    }
+    .status-pulse-dot {
+        width: 8px;
+        height: 8px;
+        background: #10b981;
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+        animation: pulseDot 2s infinite;
+    }
+    @keyframes pulseDot {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+        70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    /* Sidebar Brand Header */
+    .sidebar-brand-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        margin-bottom: 16px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        transition: all 0.25s ease;
+    }
+    .sidebar-brand-box:hover {
+        background: #eff6ff;
+        border-color: #93c5fd;
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+    }
+    .sidebar-logo-img {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+    }
+    .sidebar-brand-name {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #0f172a;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+    }
+    .sidebar-brand-sub {
+        font-size: 0.72rem;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    /* Hero Brand Layout with Logo */
+    .hero-brand-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 8px;
+    }
+    .hero-logo-img {
+        width: 72px;
+        height: 72px;
+        border-radius: 18px;
+        box-shadow: 0 10px 25px -4px rgba(37, 99, 235, 0.35);
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .hero-floating-container:hover .hero-logo-img {
+        transform: rotate(6deg) scale(1.08);
+    }
 </style>
 
 <!-- Floating Ambient Subtle Glow Orbs -->
@@ -850,6 +1013,20 @@ def create_score_distribution_histogram(benchmark_df: pd.DataFrame) -> go.Figure
 # ---------------------------------------------------------------------------
 # Sidebar Controls & Navigation (Clean Light Theme)
 # ---------------------------------------------------------------------------
+# Sidebar Top Brand Header with Logo & Name
+st.sidebar.markdown(
+    f"""
+    <div class="sidebar-brand-box">
+        <img src="data:image/png;base64,{LOGO_B64}" class="sidebar-logo-img" alt="MatchMyResume Logo" />
+        <div>
+            <div class="sidebar-brand-name">Match<span style="color:#2563eb;">My</span>Resume</div>
+            <div class="sidebar-brand-sub">ATS Intelligence</div>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.sidebar.markdown("### ⚡ Navigation")
 view_mode = st.sidebar.radio(
     "Select View:",
@@ -895,17 +1072,44 @@ selected_candidate = st.sidebar.selectbox("Choose Sample Profile:", options=cand
 
 
 # ---------------------------------------------------------------------------
+# Top Brand Navigation Header Bar with Logo and Name MatchMyResume
+# ---------------------------------------------------------------------------
+st.markdown(
+    f"""
+    <div class="top-brand-navbar">
+        <div class="brand-logo-group">
+            <img src="data:image/png;base64,{LOGO_B64}" class="brand-logo-img" alt="MatchMyResume Logo" />
+            <div class="brand-title-wrap">
+                <span class="brand-name-main">Match<span class="brand-name-accent">My</span>Resume</span>
+                <span class="brand-tagline">AI-Powered ATS Matching Engine</span>
+            </div>
+        </div>
+        <div class="brand-status-badge">
+            <span class="status-pulse-dot"></span>
+            <span class="status-text">NLP &amp; ML Verified • 100% Local</span>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+
+# ---------------------------------------------------------------------------
 # VIEW 1: Resume Matcher & Gap Analysis
 # ---------------------------------------------------------------------------
 if view_mode == "🎯 Resume Matcher & Gap Analysis":
 
-    # Hero Banner with Large Heading and 3D Opening Animation
+    # Hero Banner with Large Heading, Brand Logo and 3D Opening Animation
     st.markdown(
-        """
+        f"""
         <div class="hero-floating-container">
-            <div class="hero-subtitle">Intelligent ATS Resume Analyzer & NLP Matcher</div>
-            <h1 class="large-website-title">MATCH MY RESUME</h1>
-            <br>
+            <div class="hero-brand-header">
+                <img src="data:image/png;base64,{LOGO_B64}" class="hero-logo-img" alt="MatchMyResume Logo" />
+                <div>
+                    <div class="hero-subtitle">Intelligent ATS Resume Analyzer &amp; NLP Matcher</div>
+                    <h1 class="large-website-title">MatchMyResume</h1>
+                </div>
+            </div>
             <span class="hero-tag">⚡ Vector Space Model • Unsupervised TF-IDF • Punctuation-Safe</span>
         </div>
         """,
@@ -1235,11 +1439,15 @@ if view_mode == "🎯 Resume Matcher & Gap Analysis":
 elif view_mode == "📊 Candidate Benchmark & Ranking":
 
     st.markdown(
-        """
+        f"""
         <div class="hero-floating-container">
-            <div class="hero-subtitle">Multi-Resume Benchmark & Large Dataset Evaluation</div>
-            <h1 class="large-website-title">CANDIDATE RANKING</h1>
-            <br>
+            <div class="hero-brand-header">
+                <img src="data:image/png;base64,{LOGO_B64}" class="hero-logo-img" alt="MatchMyResume Logo" />
+                <div>
+                    <div class="hero-subtitle">Multi-Resume Benchmark &amp; Large Dataset Evaluation</div>
+                    <h1 class="large-website-title">Candidate Benchmark</h1>
+                </div>
+            </div>
             <span class="hero-tag">⚡ Genuine Kaggle Dataset (962 Resumes) • 25 Job Categories • Multi-Tier Benchmarking</span>
         </div>
         """,

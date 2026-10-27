@@ -132,7 +132,7 @@ Our engine uses **Sublinear Term Frequency** ($\text{tf} \to 1 + \ln(\text{tf})$
    - 🔵 **Blue (Additional):** Bonus skills you have that give you an edge.
 3. **🔍 Explainable AI (XAI) Table:** Shows the exact top words that increased your score (e.g., `"machine learning"`, `"sql"`, `"python"`).
 4. **👥 Multi-Candidate Benchmark Tab:** Ranks resumes from the **Kaggle Updated Resume Dataset** (962 real resumes) or 5 benchmark profiles to see who gets shortlisted.
-5. **🎓 Model Transparency & Viva Tab:** An interactive FAQ tab explaining all ML concepts with 16 viva questions & answers for college viva prep.
+5. **🎓 Comprehensive Presentation & Defense Guide:** 16 viva questions & answers, mathematical derivations, and 11 PPT slides documented in [`PRESENTATION_GUIDE.md`](PRESENTATION_GUIDE.md).
 
 ---
 
@@ -165,7 +165,7 @@ If your faculty asks about **reference papers**, here are the 3 peer-reviewed IE
 
 ```
 c:\MatchMyResume/
-├── app.py                      # 🖥️ Main Streamlit website with Light 3D Theme
+├── app.py                      # 🖥️ Main Streamlit website with Light 3D Theme & Top Logo
 ├── matcher.py                  # 🧠 The Brain: TF-IDF vectorizer, Cosine Similarity & XAI
 ├── skills.py                   # 🏷️ Skill Extractor: Regex engine for C++, Python, Docker, etc.
 ├── pdf_parser.py               # 📄 PDF Reader: PyMuPDF engine to extract text safely
@@ -175,6 +175,11 @@ c:\MatchMyResume/
 ├── requirements.txt            # 📦 List of Python packages required
 ├── README.md                   # 📖 You are reading this file!
 ├── PRESENTATION_GUIDE.md       # 🎓 Defense guide with 16 viva questions & 11 PPT slides
+├── assets/
+│   ├── logo.svg                # 🎨 Vector brand logo
+│   ├── logo.png                # 🖼️ High-resolution brand logo (512x512)
+│   ├── favicon.png             # 🌐 Web favicon icon (64x64)
+│   └── favicon.ico             # 🖥️ Windows browser ICO icon (32x32)
 ├── sample_data/
 │   ├── UpdatedResumeDataSet.csv# 📊 962 real resumes across 25 tech categories (Kaggle)
 │   ├── job_descriptions.csv    # 💼 5 benchmark tech job descriptions

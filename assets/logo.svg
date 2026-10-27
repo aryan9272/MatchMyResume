@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="60%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#0891b2" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#2563eb" flood-opacity="0.25" />
+    </filter>
+    <filter id="badgeShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.2" />
+    </filter>
+  </defs>
+
+  <!-- Background Squircle -->
+  <rect x="24" y="24" width="464" height="464" rx="100" fill="url(#brandGrad)" filter="url(#shadow)" />
+
+  <!-- Inner Resume Card -->
+  <rect x="125" y="90" width="262" height="332" rx="22" fill="#ffffff" opacity="0.96" />
+  
+  <!-- Candidate Header Profile -->
+  <circle cx="175" cy="145" r="22" fill="#2563eb" />
+  <rect x="215" y="132" width="135" height="13" rx="6.5" fill="#0f172a" />
+  <rect x="215" y="152" width="95" height="9" rx="4.5" fill="#64748b" />
+
+  <!-- Content Divider -->
+  <line x1="155" y1="185" x2="357" y2="185" stroke="#e2e8f0" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Experience / Text Lines -->
+  <rect x="155" y="205" width="202" height="11" rx="5.5" fill="#cbd5e1" />
+  <rect x="155" y="228" width="180" height="11" rx="5.5" fill="#e2e8f0" />
+  <rect x="155" y="251" width="150" height="11" rx="5.5" fill="#e2e8f0" />
+
+  <!-- Skills Chips -->
+  <rect x="155" y="285" width="65" height="18" rx="9" fill="#dbeafe" />
+  <rect x="228" y="285" width="75" height="18" rx="9" fill="#cffafe" />
+  <rect x="155" y="312" width="85" height="18" rx="9" fill="#d1fae5" />
+
+  <!-- Verification Match Checkmark Badge -->
+  <g filter="url(#badgeShadow)">
+    <circle cx="365" cy="365" r="58" fill="#10b981" />
+    <path d="M342 366 L358 382 L392 346" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>
