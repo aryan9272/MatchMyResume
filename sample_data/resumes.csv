@@ -1,0 +1,185 @@
+name,text
+"Alice Johnson","Alice Johnson | alice@email.com | LinkedIn: linkedin.com/in/alice
+
+EDUCATION
+B.Tech Computer Science, State University, 2024 | GPA: 8.7/10
+
+SKILLS
+Programming: Python, R, SQL, Java
+Machine Learning: scikit-learn, TensorFlow, XGBoost, Random Forest, Decision Trees, K-Means, LSTM, NLP, TF-IDF, Word2Vec, BERT
+Data Science: Pandas, NumPy, Matplotlib, Seaborn, Plotly, Jupyter Notebook, EDA, Feature Engineering, Data Cleaning, Statistical Analysis
+Databases: MySQL, MongoDB, PostgreSQL
+Tools: Git, GitHub, VS Code, Google Colab, Tableau
+Soft Skills: Communication, Teamwork, Problem Solving, Analytical Skills
+
+EXPERIENCE
+Data Science Intern | TechCorp Pvt Ltd | June 2023 – Aug 2023
+- Built a sentiment analysis model using NLP and BERT achieving 91% accuracy on product reviews
+- Performed EDA on 500K rows using Pandas and NumPy; visualised insights using Seaborn and Matplotlib
+- Automated ETL pipeline using Python reducing processing time by 40%
+- Used XGBoost and Random Forest for churn prediction with 88% F1 Score
+
+Machine Learning Project Intern | AI Solutions | Dec 2022 – Feb 2023
+- Implemented K-Means clustering and PCA for customer segmentation
+- Trained LSTM model for time series forecasting with 15% MAE improvement
+
+PROJECTS
+Resume ATS Matcher (Final Year Project)
+- Built NLP-based ATS system using TF-IDF cosine similarity and scikit-learn
+- Extracted skills using regex and custom dictionary; visualised results with Plotly
+- Deployed on Streamlit with PDF upload and real-time scoring
+
+COVID-19 Data Dashboard
+- Aggregated WHO data using Pandas; created interactive Plotly charts
+- Used Linear Regression for trend forecasting
+
+CERTIFICATIONS
+- Google Data Analytics Certificate
+- DeepLearning.AI TensorFlow Developer Certificate"
+"Bob Martinez","Bob Martinez | bob@email.com
+
+EDUCATION
+B.E. Information Technology, City College, 2024 | CGPA: 7.2/10
+
+SKILLS
+Languages: Python, JavaScript, Java, HTML, CSS
+Frameworks: React, Node.js, Django, Flask, Express.js, REST API
+Databases: MySQL, SQLite, Firebase
+Tools: Git, GitHub, Docker, VS Code, Postman, Linux
+Cloud: AWS (basic), Heroku
+Machine Learning: scikit-learn, Pandas, NumPy (basic ML knowledge)
+Soft Skills: Leadership, Teamwork, Time Management, Communication
+
+EXPERIENCE
+Full Stack Developer Intern | WebWorks Inc | July 2023 – Oct 2023
+- Developed RESTful APIs using Django and Flask serving 10K+ daily users
+- Built React frontend with state management using Redux
+- Containerised application using Docker; deployed on AWS EC2
+- Collaborated in Agile/Scrum team of 6 developers
+
+PROJECTS
+E-Commerce Platform
+- Full-stack app using React, Node.js, Express.js, and MongoDB
+- Implemented JWT authentication and payment gateway integration
+
+Student Grade Predictor
+- Built ML model using scikit-learn (Linear Regression) on academic data
+- Achieved RMSE of 4.2 on test set
+
+Portfolio Website
+- Responsive website using HTML5, CSS3, Bootstrap, and JavaScript
+
+CERTIFICATIONS
+- AWS Cloud Practitioner Essentials
+- Meta Front-End Developer Certificate"
+"Carol Smith","Carol Smith | carol@email.com
+
+EDUCATION
+M.Sc. Data Science, Premier Institute of Technology, 2024
+
+SKILLS
+Programming: Python, R, SQL, Scala
+Machine Learning: TensorFlow, PyTorch, scikit-learn, XGBoost, LightGBM, CatBoost, Deep Learning, CNN, RNN, LSTM, Transformer, BERT, GPT, Hugging Face, spaCy, NLTK, NLP, Computer Vision, Reinforcement Learning, Transfer Learning
+Data Engineering: Apache Spark, Hadoop, Kafka, Airflow, Databricks, dbt, ETL, ELT, Data Pipelines
+Analytics: Pandas, NumPy, SciPy, Matplotlib, Plotly, Tableau, Power BI, Statistics, Hypothesis Testing, A/B Testing
+Databases: PostgreSQL, MySQL, MongoDB, Cassandra, Redis, BigQuery, Snowflake
+Cloud/DevOps: AWS, GCP, Azure, Docker, Kubernetes, CI/CD, Terraform, MLflow
+Tools: Git, GitHub, Jupyter Notebook, VS Code, Weights & Biases
+Soft Skills: Research, Documentation, Mentoring, Technical Writing, Analytical Skills
+
+EXPERIENCE
+Data Scientist | Analytics Corp | Full-time | 2024
+- Developed production ML pipeline using PyTorch and MLflow reducing inference time by 30%
+- Built recommendation system using Collaborative Filtering for 2M+ users
+- Applied BERT for Named Entity Recognition on legal documents achieving 94% F1
+- Led A/B testing framework reducing conversion time by 22%
+- Managed Spark data pipeline on Databricks processing 1TB daily
+
+Senior ML Research Intern | AI Research Lab | 2023
+- Implemented Transformer-based model for text summarization using Hugging Face
+- Trained CNN+LSTM model for video action recognition with 89% top-5 accuracy
+- Published internal research report on Transfer Learning optimization
+
+PROJECTS
+Multimodal AI System
+- Combined Computer Vision (OpenCV, CNN) and NLP (BERT) for document understanding
+- Deployed using FastAPI and Docker on GCP
+
+Real-Time Fraud Detection
+- Built anomaly detection system using Isolation Forest and XGBoost on Kafka stream
+- Reduced false positive rate by 35% using hyperparameter tuning
+
+CERTIFICATIONS
+- Google Professional Data Engineer
+- DeepLearning.AI NLP Specialization
+- AWS Solutions Architect Associate"
+"David Lee","David Lee | david@email.com
+
+EDUCATION
+B.Sc. Computer Science, Regional University, 2024 | GPA: 6.8/10
+
+SKILLS
+Programming: Python, C, C++, Java (basic), SQL (basic)
+Tools: Git, VS Code, MS Office, Linux (basic)
+Concepts: Data Structures, Algorithms, OOP, DBMS
+Soft Skills: Teamwork, Communication, Adaptability, Time Management
+
+EXPERIENCE
+IT Support Intern | LocalBiz Solutions | Summer 2023
+- Provided technical support for 50+ employees; resolved hardware/software issues
+- Maintained inventory database using Excel and basic SQL queries
+
+PROJECTS
+Library Management System
+- Designed using C++ with file handling for CRUD operations
+
+Simple Chatbot
+- Rule-based chatbot using Python and if-else logic (no ML)
+
+Student Result Management
+- Built console app using Java with basic MySQL integration
+
+ACTIVITIES
+- Member, Coding Club (participated in 2 hackathons)
+- Volunteer, College Tech Fest
+
+CERTIFICATIONS
+- NPTEL Python for Data Science (basic)"
+"Eva Chen","Eva Chen | eva@email.com
+
+EDUCATION
+B.Tech Artificial Intelligence and Machine Learning, Top University, 2024 | GPA: 9.1/10
+
+SKILLS
+Programming: Python, R, SQL, Julia, MATLAB
+Machine Learning: scikit-learn, TensorFlow, PyTorch, Keras, XGBoost, LightGBM, Random Forest, SVM, KNN, Naive Bayes, Gradient Boosting, Neural Networks, CNN, RNN, LSTM, Transformer, BERT, Generative AI, NLP, Computer Vision, Reinforcement Learning, Transfer Learning, Anomaly Detection, Clustering, K-Means, Time Series Analysis, Recommender Systems
+MLOps: MLflow, Weights & Biases, ONNX, Docker, Kubernetes, CI/CD, GitHub Actions
+Data: Pandas, NumPy, SciPy, Matplotlib, Seaborn, Plotly, EDA, Feature Engineering, Statistical Analysis, Hypothesis Testing, A/B Testing, Data Cleaning, Data Preprocessing, Data Visualization
+NLP Tools: spaCy, NLTK, Hugging Face, BERT, GPT, Word2Vec, GloVe, TF-IDF, Sentiment Analysis, Named Entity Recognition, Text Classification, Text Summarization
+Databases: PostgreSQL, MySQL, MongoDB, Redis, Elasticsearch, BigQuery
+Cloud: AWS, GCP, Azure, Terraform
+Soft Skills: Research, Leadership, Mentoring, Technical Writing, Problem Solving, Communication, Presentation Skills
+
+EXPERIENCE
+AI/ML Engineer | TopTech Ltd | 2024 (current)
+- Deployed end-to-end ML pipeline using MLflow, Docker, Kubernetes on AWS achieving 99.5% uptime
+- Built RAG system using LLMs and vector databases reducing hallucination by 40%
+- Developed NLP models for Sentiment Analysis and NER with 96% accuracy
+- Led team of 3 in Agile sprint; presented results to stakeholders
+
+Research Intern | University AI Lab | 2023
+- Implemented Reinforcement Learning agent for game optimization
+- Published paper on Transfer Learning for low-resource NLP (IEEE conference)
+
+PROJECTS
+AI Resume Matcher
+- Production ATS tool using TF-IDF, BERT embeddings, cosine similarity
+- Streamlit dashboard with Plotly analytics
+
+Autonomous Driving Simulator
+- CNN-based object detection using OpenCV and PyTorch on custom dataset
+
+CERTIFICATIONS
+- Stanford ML Specialization (Coursera)
+- Google Cloud Professional ML Engineer
+- NVIDIA Deep Learning Fundamentals"

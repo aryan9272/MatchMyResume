@@ -1,0 +1,118 @@
+role,description
+"Data Scientist","We are looking for a skilled Data Scientist to join our Analytics team.
+
+Required Skills and Qualifications:
+- Strong proficiency in Python and R programming languages
+- Experience with Machine Learning frameworks: scikit-learn, TensorFlow, PyTorch, XGBoost
+- Deep knowledge of NLP techniques: TF-IDF, Word2Vec, BERT, spaCy, NLTK, Sentiment Analysis, Named Entity Recognition
+- Proficiency in Data Science libraries: Pandas, NumPy, Matplotlib, Seaborn, Plotly
+- Statistical Analysis, Hypothesis Testing, A/B Testing, and EDA skills
+- Database skills: SQL, PostgreSQL, MySQL, MongoDB
+- Experience with Feature Engineering, Data Cleaning, Data Preprocessing
+- Machine Learning algorithms: Random Forest, Decision Trees, Gradient Boosting, SVM, KNN, Logistic Regression, Linear Regression, K-Means, DBSCAN
+- Neural Networks, Deep Learning, CNN, RNN, LSTM knowledge
+- MLOps tools: MLflow, Docker, Git, GitHub
+- Cloud experience: AWS or GCP preferred
+- Strong Communication, Problem Solving, and Analytical Skills
+- Experience with Jupyter Notebook, Google Colab
+- Visualization tools: Tableau or Power BI preferred
+- Knowledge of Cross-Validation, Model Evaluation, Hyperparameter Tuning
+
+Responsibilities:
+- Develop and deploy machine learning models for business problems
+- Perform exploratory data analysis on large datasets
+- Build and maintain data pipelines using Python and SQL
+- Present findings to both technical and non-technical stakeholders
+- Collaborate in Agile team environment"
+"Full Stack Developer","We are hiring a Full Stack Developer for our product team.
+
+Required Skills:
+- Proficiency in Python, JavaScript, TypeScript
+- Frontend: React, Angular, or Vue.js, HTML5, CSS3, Bootstrap
+- Backend: Node.js, Django, Flask, FastAPI, REST API design
+- Databases: MySQL, PostgreSQL, MongoDB, Redis
+- Cloud and DevOps: Docker, Kubernetes, AWS or Azure, CI/CD, GitHub Actions
+- Version control: Git, GitHub
+- Testing: Unit testing, pytest, Jest
+- Agile/Scrum methodology
+- Communication, Teamwork, Problem Solving skills
+- Linux experience preferred
+- Experience with microservices architecture
+- API documentation: Swagger, Postman
+
+Responsibilities:
+- Design and develop scalable web applications
+- Build RESTful APIs and integrate third-party services
+- Write clean, maintainable code with proper documentation
+- Participate in code reviews and Agile ceremonies
+- Deploy and monitor applications on cloud infrastructure"
+"Machine Learning Engineer","We are seeking an experienced Machine Learning Engineer.
+
+Required Qualifications:
+- Expert-level Python programming
+- Machine Learning: TensorFlow, PyTorch, scikit-learn, Keras, XGBoost, LightGBM
+- Deep Learning: CNN, RNN, LSTM, Transformer, BERT, Generative AI, LLMs
+- NLP: spaCy, NLTK, Hugging Face, Sentiment Analysis, NER, Text Classification, Text Summarization
+- Computer Vision: OpenCV, object detection, image segmentation
+- MLOps: MLflow, Weights & Biases, ONNX, Docker, Kubernetes, CI/CD
+- Cloud: AWS, GCP, or Azure with ML services
+- Data: Pandas, NumPy, Feature Engineering, Data Pipelines
+- SQL and NoSQL databases
+- Git, GitHub, collaborative development
+- Strong Mathematical background: Linear Algebra, Calculus, Probability, Statistics
+- Reinforcement Learning and Transfer Learning knowledge preferred
+- Technical Writing, Research, Documentation
+- Leadership and Mentoring experience a plus
+
+Responsibilities:
+- Design, build and deploy production ML systems
+- Optimize model performance and inference speed
+- Collaborate with data engineers and software developers
+- Monitor models in production and handle model drift
+- Write technical documentation and research reports"
+"Data Analyst","We are looking for a Data Analyst to support business decision-making.
+
+Required Skills:
+- Proficiency in Python and SQL
+- Data Analysis and Data Visualization using Pandas, NumPy, Matplotlib, Seaborn, Plotly
+- Business Intelligence tools: Tableau, Power BI, Excel
+- Statistical Analysis, Hypothesis Testing, A/B Testing
+- Database skills: MySQL, PostgreSQL, MongoDB
+- EDA and Data Cleaning experience
+- Strong Communication and Presentation Skills
+- Excel, Google Sheets proficiency
+- Git version control
+- Attention to Detail and Analytical Skills
+
+Responsibilities:
+- Analyze large datasets to extract business insights
+- Create dashboards and reports for stakeholders
+- Support data-driven decision making
+- Maintain data quality and documentation
+- Collaborate with business and engineering teams"
+"Software Engineer","We are looking for a Software Engineer to join our engineering team.
+
+Required Skills:
+- Strong programming skills in Python, Java, or C++
+- Data Structures and Algorithms proficiency
+- Object-Oriented Programming (OOP)
+- SQL and basic database knowledge
+- Git and GitHub version control
+- Linux/Unix environment experience
+- REST API development
+- Problem Solving and Critical Thinking
+- Communication and Teamwork
+- Agile/Scrum familiarity
+
+Preferred:
+- Cloud experience (AWS, GCP, or Azure)
+- Docker basics
+- Testing frameworks (pytest, JUnit)
+- CI/CD knowledge
+
+Responsibilities:
+- Design and implement software solutions
+- Write clean, well-documented code
+- Participate in code reviews
+- Debug and resolve software issues
+- Collaborate in cross-functional teams"
