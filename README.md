@@ -32,10 +32,17 @@ When you apply for a job, companies use an **Applicant Tracking System (ATS)** t
 
 ---
 
-## 🚀 Quick Start (Run it in 3 Steps!)
+## 🚀 Quick Start (2 Easy Options)
 
-Open **Windows PowerShell** and run these 3 commands:
+### ⚡ Option A: 1-Click Launch (Easiest!)
+Simply **double-click** the file:
+👉 **[`run.bat`](run.bat)** (or [`run_app.bat`](run_app.bat))
 
+It automatically activates your virtual environment, launches Streamlit, and opens your browser directly!
+
+---
+
+### 💻 Option B: Run via Windows PowerShell
 ```powershell
 # Step 1: Go to the project folder
 cd C:\MatchMyResume
@@ -172,6 +179,8 @@ c:\MatchMyResume/
 ├── evaluate.py                 # 📈 Evaluator: Ranks candidates across the 962 Kaggle dataset
 ├── generate_overview_pdf.py    # 🖨️ PDF Generator: Builds the 5-page printable project handbook
 ├── ATS_Resume_Matcher_Project_Overview.pdf # 📘 Printable team defense handbook
+├── run.bat                     # ⚡ 1-Click Windows Launcher (Double-click to start!)
+├── run_app.bat                 # ⚡ 1-Click Launcher shortcut
 ├── requirements.txt            # 📦 List of Python packages required
 ├── README.md                   # 📖 You are reading this file!
 ├── PRESENTATION_GUIDE.md       # 🎓 Defense guide with 16 viva questions & 11 PPT slides
