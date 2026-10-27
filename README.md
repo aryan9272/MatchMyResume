@@ -126,7 +126,12 @@ Contains 5 fictional candidate resumes representing diverse qualification tiers:
 - **Bob Martinez:** Full Stack Developer with strong React/Node.js/Docker skills (low fit for Data Science).
 - **David Lee:** IT Support intern with basic C++/Java (accurately receives low ATS scores for advanced roles).
 
-### 3. `sample_data/Alice_Johnson_Resume.pdf`
+### 3. `sample_data/UpdatedResumeDataSet.csv` (Genuine Kaggle Dataset)
+- **Source:** [Kaggle Updated Resume Dataset](https://www.kaggle.com/datasets/jillanisofttech/updated-resume-dataset) by Jillani SofTech.
+- **Records:** **962 full resumes across 25 job domains** (Java Developer, Data Science, DevOps Engineer, Python Developer, Web Designing, Database, DotNet Developer, Testing, Blockchain, HR, etc.).
+- **Usage:** Integrated directly into the **Candidate Benchmark & Ranking** tab with category filters, score distribution histograms, top-K ranking, and CSV export.
+
+### 4. `sample_data/Alice_Johnson_Resume.pdf`
 A clean digital PDF resume generated with PyMuPDF for instant testing of the PDF upload feature.
 
 ---

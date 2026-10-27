@@ -24,7 +24,14 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from evaluate import evaluate_candidates, load_job_descriptions, load_resumes
+from evaluate import (
+    evaluate_candidates,
+    evaluate_kaggle_candidates,
+    get_kaggle_categories,
+    load_job_descriptions,
+    load_kaggle_resumes,
+    load_resumes,
+)
 from matcher import MatchResult, match_resume_to_jd
 from pdf_parser import extract_text_from_pdf, parse_uploaded_pdf
 from skills import TECH_SKILLS, categorize_skills, get_skill_category
@@ -530,14 +537,17 @@ def create_category_breakdown_chart(
     return fig
 
 
-def create_candidate_comparison_chart(benchmark_df: pd.DataFrame) -> go.Figure:
-    """Plotly horizontal bar chart ranking fictional candidate resumes."""
-    df_sorted = benchmark_df.sort_values("Composite ATS Score (%)", ascending=True)
+def create_candidate_comparison_chart(benchmark_df: pd.DataFrame, top_n: int = 12) -> go.Figure:
+    """Plotly horizontal bar chart ranking candidate resumes."""
+    cand_col = "Candidate" if "Candidate" in benchmark_df.columns else "Candidate ID"
+    # Take top N and sort ascending for horizontal display
+    df_top = benchmark_df.head(top_n)
+    df_sorted = df_top.sort_values("Composite ATS Score (%)", ascending=True)
 
     fig = go.Figure()
     fig.add_trace(
         go.Bar(
-            y=df_sorted["Candidate"],
+            y=df_sorted[cand_col],
             x=df_sorted["Composite ATS Score (%)"],
             name="Composite ATS Score (%)",
             orientation="h",
@@ -549,7 +559,7 @@ def create_candidate_comparison_chart(benchmark_df: pd.DataFrame) -> go.Figure:
     )
     fig.add_trace(
         go.Bar(
-            y=df_sorted["Candidate"],
+            y=df_sorted[cand_col],
             x=df_sorted["Skill Coverage (%)"],
             name="Skill Coverage (%)",
             orientation="h",
@@ -561,7 +571,7 @@ def create_candidate_comparison_chart(benchmark_df: pd.DataFrame) -> go.Figure:
     )
     fig.add_trace(
         go.Bar(
-            y=df_sorted["Candidate"],
+            y=df_sorted[cand_col],
             x=df_sorted["TF-IDF Similarity (%)"],
             name="TF-IDF Similarity (%)",
             orientation="h",
@@ -583,7 +593,7 @@ def create_candidate_comparison_chart(benchmark_df: pd.DataFrame) -> go.Figure:
             tickfont=dict(color="#64748b"),
             ticksuffix="%",
         ),
-        yaxis=dict(tickfont=dict(color="#0f172a", size=12)),
+        yaxis=dict(tickfont=dict(color="#0f172a", size=11)),
         legend=dict(
             orientation="h",
             yanchor="bottom",
@@ -592,8 +602,36 @@ def create_candidate_comparison_chart(benchmark_df: pd.DataFrame) -> go.Figure:
             x=1,
             font=dict(color="#0f172a"),
         ),
-        height=340,
+        height=max(320, len(df_sorted) * 28),
         margin=dict(l=20, r=20, t=30, b=20),
+    )
+    return fig
+
+
+def create_score_distribution_histogram(benchmark_df: pd.DataFrame) -> go.Figure:
+    """Plotly histogram showing score distribution across candidate population."""
+    fig = px.histogram(
+        benchmark_df,
+        x="Composite ATS Score (%)",
+        nbins=14,
+        title="Score Distribution Across Population",
+        color_discrete_sequence=["#2563eb"],
+    )
+    fig.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        xaxis=dict(
+            title=dict(text="Composite ATS Score (%)", font=dict(color="#64748b")),
+            gridcolor="#f1f5f9",
+            tickfont=dict(color="#64748b"),
+        ),
+        yaxis=dict(
+            title=dict(text="Candidate Count", font=dict(color="#64748b")),
+            gridcolor="#f1f5f9",
+            tickfont=dict(color="#64748b"),
+        ),
+        height=280,
+        margin=dict(l=20, r=20, t=35, b=20),
     )
     return fig
 
@@ -1000,10 +1038,10 @@ elif view_mode == "📊 Candidate Benchmark & Ranking":
     st.markdown(
         """
         <div class="hero-floating-container">
-            <div class="hero-subtitle">Multi-Resume Benchmark Evaluation</div>
+            <div class="hero-subtitle">Multi-Resume Benchmark & Large Dataset Evaluation</div>
             <h1 class="large-website-title">CANDIDATE RANKING</h1>
             <br>
-            <span class="hero-tag">⚡ Batch Evaluation • Real Discrimination • Fictional Candidate Pool</span>
+            <span class="hero-tag">⚡ Genuine Kaggle Dataset (962 Resumes) • 25 Job Categories • Multi-Tier Benchmarking</span>
         </div>
         """,
         unsafe_allow_html=True,
@@ -1012,48 +1050,190 @@ elif view_mode == "📊 Candidate Benchmark & Ranking":
     jds_df = get_sample_jds()
     role_options = jds_df["role"].tolist()
 
-    bench_col1, bench_col2 = st.columns([2, 1])
-    with bench_col1:
-        target_role = st.selectbox(
-            "Select Job Role for Candidate Benchmark:",
-            options=role_options,
-            index=0,
-        )
-    with bench_col2:
-        st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-        recompute_btn = st.button("🔄 Re-evaluate Candidates", use_container_width=True)
-
-    with st.spinner(f"Evaluating candidate pool against '{target_role}'..."):
-        benchmark_results = evaluate_candidates(
-            target_role,
-            tfidf_weight=norm_tfidf_w,
-            skill_weight=norm_skill_w,
-        )
-
-    st.subheader(f"Rankings for '{target_role}'")
-    st.plotly_chart(create_candidate_comparison_chart(benchmark_results), use_container_width=True)
-
-    st.markdown("#### Detailed Candidate Comparison Table")
-    display_cols = [
-        "Candidate",
-        "Composite ATS Score (%)",
-        "TF-IDF Similarity (%)",
-        "Skill Coverage (%)",
-        "ATS Tier",
-        "Matched Skills Count",
-        "Missing Skills Count",
-        "Top Matched Skills",
-    ]
-    st.dataframe(benchmark_results[display_cols], use_container_width=True)
-
-    # Download Results CSV
-    csv_data = benchmark_results.to_csv(index=True)
-    st.download_button(
-        label="📥 Export Benchmark Rankings as CSV",
-        data=csv_data,
-        file_name=f"candidate_rankings_{target_role.lower().replace(' ', '_')}.csv",
-        mime="text/csv",
+    bench_tab1, bench_tab2 = st.tabs(
+        [
+            "🏆 Controlled 5-Tier Benchmark Pool",
+            "🌐 Genuine Kaggle Dataset (962 Resumes / 25 Domains)",
+        ]
     )
+
+    with bench_tab1:
+        st.markdown("#### Controlled Discrimination Benchmark (5 Qualification Tiers)")
+        st.caption(
+            "Quickly demonstrates model discrimination across 5 standardized profiles: "
+            "Senior AI/ML, M.Sc. Data Science, Entry-Level Graduate, Cross-Domain Web Dev, and IT Support."
+        )
+
+        bcol1, bcol2 = st.columns([2, 1])
+        with bcol1:
+            target_role = st.selectbox(
+                "Target Role for 5-Tier Benchmark:",
+                options=role_options,
+                index=0,
+                key="bench_5_role",
+            )
+        with bcol2:
+            st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+            recompute_5_btn = st.button("🔄 Re-evaluate 5 Candidates", use_container_width=True, key="btn_5_recomp")
+
+        with st.spinner(f"Evaluating 5 candidates against '{target_role}'..."):
+            benchmark_results = evaluate_candidates(
+                target_role,
+                tfidf_weight=norm_tfidf_w,
+                skill_weight=norm_skill_w,
+            )
+
+        st.plotly_chart(create_candidate_comparison_chart(benchmark_results, top_n=5), use_container_width=True)
+
+        st.markdown("#### Benchmark Comparison Table")
+        display_cols = [
+            "Candidate",
+            "Composite ATS Score (%)",
+            "TF-IDF Similarity (%)",
+            "Skill Coverage (%)",
+            "ATS Tier",
+            "Matched Skills Count",
+            "Missing Skills Count",
+            "Top Matched Skills",
+        ]
+        st.dataframe(benchmark_results[display_cols], use_container_width=True)
+
+        csv_data_5 = benchmark_results.to_csv(index=True)
+        st.download_button(
+            label="📥 Export 5-Tier Rankings as CSV",
+            data=csv_data_5,
+            file_name=f"benchmark_5_{target_role.lower().replace(' ', '_')}.csv",
+            mime="text/csv",
+            key="dl_5_csv",
+        )
+
+    with bench_tab2:
+        st.markdown("#### Large-Scale Evaluation: Kaggle Updated Resume Dataset")
+        st.caption(
+            "Evaluates genuine real-world resumes from the **Kaggle Updated Resume Dataset (962 Resumes across 25 Categories)**. "
+            "Filter by category to evaluate domain-specific candidates, or run across the entire population."
+        )
+
+        kaggle_categories = ["All Categories (962 Resumes)"] + get_kaggle_categories()
+
+        kcol1, kcol2, kcol3 = st.columns([2, 2, 1])
+        with kcol1:
+            kaggle_role = st.selectbox(
+                "Target Job Description:",
+                options=role_options,
+                index=0,
+                key="kaggle_role_sel",
+            )
+        with kcol2:
+            selected_category = st.selectbox(
+                "Filter by Kaggle Category (25 Domains):",
+                options=kaggle_categories,
+                index=1,  # Default to 'Data Science' or first domain
+                key="kaggle_cat_sel",
+            )
+        with kcol3:
+            sample_limit = st.select_slider(
+                "Batch Limit:",
+                options=[10, 20, 40, 80, 962],
+                value=20,
+                key="kaggle_limit_sel",
+                help="Limits number of resumes evaluated for instant live presentation response.",
+            )
+
+        run_kaggle_btn = st.button("🚀 Run Large-Scale Evaluation on Kaggle Dataset", use_container_width=True, key="btn_run_kaggle")
+
+        # Automatically run initial view
+        with st.spinner(f"Evaluating {sample_limit} Kaggle resumes from '{selected_category}' against '{kaggle_role}'..."):
+            kaggle_results = evaluate_kaggle_candidates(
+                kaggle_role,
+                category_filter=selected_category,
+                limit=sample_limit,
+                tfidf_weight=norm_tfidf_w,
+                skill_weight=norm_skill_w,
+            )
+
+        # Summary Metrics Row
+        km1, km2, km3, km4 = st.columns(4)
+        with km1:
+            st.markdown(
+                f"""
+                <div class="floating-card">
+                    <div class="floating-metric-title">Candidates Evaluated</div>
+                    <div class="floating-metric-value">{len(kaggle_results)}</div>
+                    <div class="floating-metric-sub">Kaggle Resume Batch</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        with km2:
+            peak_score = kaggle_results["Composite ATS Score (%)"].max() if not kaggle_results.empty else 0.0
+            st.markdown(
+                f"""
+                <div class="floating-card">
+                    <div class="floating-metric-title">Highest Score</div>
+                    <div class="floating-metric-value">{peak_score:.1f}%</div>
+                    <div class="floating-metric-sub">Top Ranked Candidate</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        with km3:
+            avg_score = kaggle_results["Composite ATS Score (%)"].mean() if not kaggle_results.empty else 0.0
+            st.markdown(
+                f"""
+                <div class="floating-card">
+                    <div class="floating-metric-title">Average Match</div>
+                    <div class="floating-metric-value">{avg_score:.1f}%</div>
+                    <div class="floating-metric-sub">Population Mean</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        with km4:
+            st.markdown(
+                f"""
+                <div class="floating-card">
+                    <div class="floating-metric-title">Source Dataset</div>
+                    <div class="floating-metric-value">962</div>
+                    <div class="floating-metric-sub">UpdatedResumeDataSet.csv</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        # Visual Analytics
+        kchart1, kchart2 = st.columns([1, 1])
+        with kchart1:
+            st.markdown("**Top Ranked Candidates Leaderboard**")
+            st.plotly_chart(create_candidate_comparison_chart(kaggle_results, top_n=10), use_container_width=True)
+
+        with kchart2:
+            st.markdown("**Score Distribution Histogram**")
+            st.plotly_chart(create_score_distribution_histogram(kaggle_results), use_container_width=True)
+
+        st.markdown("#### Full Ranked Candidate Leaderboard")
+        k_display_cols = [
+            "Candidate ID",
+            "Domain Category",
+            "Composite ATS Score (%)",
+            "TF-IDF Similarity (%)",
+            "Skill Coverage (%)",
+            "ATS Tier",
+            "Matched Skills Count",
+            "Missing Skills Count",
+            "Top Matched Skills",
+            "Word Count",
+        ]
+        st.dataframe(kaggle_results[k_display_cols], use_container_width=True)
+
+        csv_kaggle_data = kaggle_results.to_csv(index=True)
+        st.download_button(
+            label=f"📥 Export All {len(kaggle_results)} Kaggle Candidate Rankings as CSV",
+            data=csv_kaggle_data,
+            file_name=f"kaggle_rankings_{selected_category.lower().replace(' ', '_')}.csv",
+            mime="text/csv",
+            key="dl_kaggle_csv",
+        )
 
 
 # ---------------------------------------------------------------------------

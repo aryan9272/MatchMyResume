@@ -29,7 +29,14 @@ from matcher import (
 )
 from pdf_parser import extract_text_from_pdf, ParseResult
 from skills import extract_skills, categorize_skills, get_skill_category
-from evaluate import load_resumes, load_job_descriptions, evaluate_candidates
+from evaluate import (
+    load_resumes,
+    load_job_descriptions,
+    evaluate_candidates,
+    load_kaggle_resumes,
+    get_kaggle_categories,
+    evaluate_kaggle_candidates,
+)
 
 try:
     import pymupdf
@@ -360,6 +367,24 @@ class TestEvaluationModule:
         assert "Composite ATS Score (%)" in df.columns
         assert "Candidate" in df.columns
         # Verify ranking is sorted descending
+        scores = df["Composite ATS Score (%)"].tolist()
+        assert scores == sorted(scores, reverse=True)
+
+    def test_load_kaggle_dataset(self):
+        df = load_kaggle_resumes()
+        assert len(df) == 962
+        assert "Category" in df.columns
+        assert "Resume" in df.columns
+        categories = get_kaggle_categories()
+        assert len(categories) == 25
+        assert "Data Science" in categories
+
+    def test_evaluate_kaggle_candidates_filter(self):
+        df = evaluate_kaggle_candidates("Data Scientist", category_filter="Data Science", limit=5)
+        assert len(df) == 5
+        assert "Composite ATS Score (%)" in df.columns
+        assert "Domain Category" in df.columns
+        assert all(df["Domain Category"] == "Data Science")
         scores = df["Composite ATS Score (%)"].tolist()
         assert scores == sorted(scores, reverse=True)
 
