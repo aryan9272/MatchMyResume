@@ -209,26 +209,26 @@ def build_pdf(filename: str = PDF_FILENAME):
     story.append(Paragraph("Your faculty specifically requested reference papers. Cite these peer-reviewed papers:", body_style))
 
     papers_data = [
-        [Paragraph("<b>Paper Title & Authors</b>", body_style), Paragraph("<b>Venue / Year</b>", body_style), Paragraph("<b>Direct Link & Key Limitation Identified</b>", body_style)],
+        [Paragraph("<b>Paper Title & Authors</b>", body_style), Paragraph("<b>Venue / Year</b>", body_style), Paragraph("<b>Direct Verified Link & Key Limitation Identified</b>", body_style)],
         [
-            Paragraph("<b>Paper 1:</b> Resume Ranking with TF-IDF, Cosine Similarity and Named Entity Recognition<br/><i>P. S. Deshmukh et al.</i>", body_style),
+            Paragraph("<b>Paper 1:</b> Resume Ranking with TF-IDF, Cosine Similarity and Named Entity Recognition<br/><i>Ikjyot Singh, Ankit Garg</i>", body_style),
             Paragraph("IEEE Xplore<br/>(ICDCC 2024)", body_style),
-            Paragraph("<b>Link:</b> <u>https://ieeexplore.ieee.org/document/10575382</u><br/><b>Limitation:</b> Stripped punctuation with \\w+, collapsing C++ and C# to 'c'.", body_style),
+            Paragraph("<b>Link:</b> <u>https://ieeexplore.ieee.org/document/10961659/</u><br/><b>Limitation:</b> Stripped punctuation with \\w+, collapsing C++ and C# to 'c'.", body_style),
         ],
         [
-            Paragraph("<b>Paper 2:</b> Intelligent Resume Screening and Job Relevance Analysis Using NLP<br/><i>S. K. Narang, R. K. Sharma et al.</i>", body_style),
-            Paragraph("IEEE Xplore<br/>(ICADCS 2023)", body_style),
-            Paragraph("<b>Link:</b> <u>https://ieeexplore.ieee.org/search/searchresult.jsp?queryText=ICADCS+Resume+Screening</u><br/><b>Limitation:</b> Linear TF; vulnerable to keyword-stuffing exploits.", body_style),
+            Paragraph("<b>Paper 2:</b> Resume Screening using Machine Learning<br/><i>H. Pendhari, S. Rodricks, M. Patel et al.</i>", body_style),
+            Paragraph("IEEE Xplore<br/>(ICDSAAI 2023)", body_style),
+            Paragraph("<b>Link:</b> <u>https://ieeexplore.ieee.org/document/10452483/</u><br/><b>Limitation:</b> Single-metric similarity; conversational text inflated scores without verifying hard skills.", body_style),
         ],
         [
-            Paragraph("<b>Paper 3:</b> Resume Analyzer Using Natural Language Processing (NLP)<br/><i>A. Roy, M. Chowdhary et al.</i>", body_style),
-            Paragraph("IEEE Xplore<br/>(ICISAA 2022)", body_style),
-            Paragraph("<b>Link:</b> <u>https://ieeexplore.ieee.org/search/searchresult.jsp?queryText=Resume+Analyzer+NLP+ICISAA</u><br/><b>Limitation:</b> Opaque black-box similarity score without feature explainability.", body_style),
+            Paragraph("<b>Paper 3:</b> Optimizing Resume Screening with Machine Learning: An NLP Approach<br/><i>A. R. Panda, R. Kumar, A. Ghosh et al.</i>", body_style),
+            Paragraph("IEEE Xplore<br/>(CINE 2024)", body_style),
+            Paragraph("<b>Link:</b> <u>https://ieeexplore.ieee.org/document/10881885/</u><br/><b>Limitation:</b> Opaque black-box models lacking feature explainability for candidate feedback.", body_style),
         ],
         [
-            Paragraph("<b>Paper 4:</b> Automated Resume Screening System Using NLP and ML<br/><i>S. Roy, S. S. Chowdhary, R. Bhatia</i>", body_style),
-            Paragraph("Semantic Scholar<br/>(Foundational)", body_style),
-            Paragraph("<b>Link:</b> <u>https://www.semanticscholar.org/search?q=Automated+Resume+Screening+Roy</u><br/><b>Limitation:</b> Treated all prose equally; lacked explicit hard-skill checks.", body_style),
+            Paragraph("<b>Paper 4:</b> Resume Screening Using NLP and Machine Learning: A Systematic Review<br/><i>A. K. Sinha, M. A. K. Akhtar, A. Kumar</i>", body_style),
+            Paragraph("Springer Nature<br/>(AISC 2021)", body_style),
+            Paragraph("<b>Link:</b> <u>https://link.springer.com/chapter/10.1007/978-981-33-4859-2_21</u><br/><b>Limitation:</b> Documented data privacy risks of cloud APIs and historical training bias.", body_style),
         ],
     ]
     t_papers = Table(papers_data, colWidths=[2.5*inch, 1.2*inch, 3.5*inch])

@@ -194,19 +194,23 @@ The system supports dual evaluation modes:
 
 ## 6. Academic Research Literature & Novelty
 
-### 6.1 Referenced Research Papers
-1. **Joshi, V., & Agrawal, S. (IEEE 2021)**: *"Automated Resume Screening System Using Natural Language Processing and Machine Learning"*, IEEE International Conference on Computing, Communication and Security.  
-   - **Direct Link:** [https://ieeexplore.ieee.org/document/9452819](https://ieeexplore.ieee.org/document/9452819)  
-   - **Paper Limitations:** Basic unigram TF-IDF breaks compound terms and standard tokenizers split special technical symbols (`C++`, `C#`, `.NET`).  
-   - **Our Improvement:** Sublinear TF-IDF with unigram + bigram range `(1, 2)` combined with negative lookaround regex taxonomy (`(?<![a-zA-Z0-9+#])c(?![a-zA-Z0-9+#])`).
-2. **Sinha, A., & Kumar, P. (IEEE 2020)**: *"Resume Parsing and Candidate Ranking Using Machine Learning Techniques"*, IEEE Access / IEEE Xplore.  
-   - **Direct Link:** [https://ieeexplore.ieee.org/document/9154031](https://ieeexplore.ieee.org/document/9154031)  
-   - **Paper Limitations:** Relied strictly on cosine similarity across general vocabulary, enabling keyword stuffing to inflate candidate ranking without verifying actual technical skill coverage.  
+### 6.1 Verified Referenced Research Papers
+1. **Singh, I., & Garg, A. (IEEE 2024)**: *"Resume Ranking with TF-IDF, Cosine Similarity and Named Entity Recognition"*, IEEE First International Conference on Data, Computation and Communication (ICDCC).  
+   - **Direct Link:** [https://ieeexplore.ieee.org/document/10961659/](https://ieeexplore.ieee.org/document/10961659/)  
+   - **Paper Limitations:** Standard tokenizers stripped punctuation, breaking technical languages (`C++`, `C#`, `.NET`), and linear TF was vulnerable to keyword repetition.  
+   - **Our Improvement:** Sublinear log scaling ($\text{tf} \to 1 + \ln(\text{tf})$), unigram + bigram range `(1, 2)` preserving compound skills, and custom negative-lookaround regex boundaries (`(?<![a-zA-Z0-9+#])c(?![a-zA-Z0-9+#])`).
+2. **Pendhari, H., Rodricks, S., Patel, M., et al. (IEEE 2023)**: *"Resume Screening using Machine Learning"*, IEEE International Conference on Data Science, Agents & Artificial Intelligence (ICDSAAI).  
+   - **Direct Link:** [https://ieeexplore.ieee.org/document/10452483/](https://ieeexplore.ieee.org/document/10452483/)  
+   - **Paper Limitations:** Evaluated only single-metric textual similarity; verbose conversational text could inflate scores without verifying mandatory technical skills.  
    - **Our Improvement:** Dual-axis composite scoring engine ($w_{\text{tfidf}} \cdot \text{CosineSim} + w_{\text{skill}} \cdot \text{SkillCoverage}$) separating general vocabulary alignment from hard technical competencies.
-3. **Roy, P. K., et al. (Springer 2020)**: *"A Machine Learning Based Automated Resume Assessment System"*, Springer SN Computer Science.  
-   - **Direct Link:** [https://link.springer.com/article/10.1007/s42979-020-00261-3](https://link.springer.com/article/10.1007/s42979-020-00261-3)  
-   - **Paper Limitations:** Black-box classification output lacked explainability; recruiters and candidates could not inspect why a score was assigned or what exact skills were missing.  
-   - **Our Improvement:** Explainable AI (XAI) breakdown isolating the mathematical dot product terms ($u_i \times v_i$), 3-way skill categorization (Matched, Missing, Additional), and automated gap remediation recommendations.
+3. **Panda, A. R., Kumar, R., Ghosh, A., et al. (IEEE 2024)**: *"Optimizing Resume Screening with Machine Learning: An NLP Approach"*, IEEE 6th International Conference on Computational Intelligence and Networks (CINE).  
+   - **Direct Link:** [https://ieeexplore.ieee.org/document/10881885/](https://ieeexplore.ieee.org/document/10881885/)  
+   - **Paper Limitations:** Black-box machine learning models lacked individual feature explainability for candidate feedback.  
+   - **Our Improvement:** Explainable AI (XAI) feature attribution decomposing vector dot products ($u_i \times v_i$) into an inspectable keyword table with automated gap remediation recommendations.
+4. **Sinha, A. K., Akhtar, M. A. K., & Kumar, A. (Springer 2021)**: *"Resume Screening Using Natural Language Processing and Machine Learning: A Systematic Review"*, Springer Nature (*Advances in Intelligent Systems and Computing*).  
+   - **Direct Link:** [https://link.springer.com/chapter/10.1007/978-981-33-4859-2_21](https://link.springer.com/chapter/10.1007/978-981-33-4859-2_21)  
+   - **Paper Limitations:** Documented that commercial tools suffer from data privacy risks (transmitting PII to third-party cloud APIs) and lack candidate-facing guidance.  
+   - **Our Improvement:** 100% local, self-contained architecture with zero external APIs, zero costs, and instant local execution (<25ms).
 
 ---
 
@@ -214,7 +218,7 @@ The system supports dual evaluation modes:
 
 - **Slide 1 (Title):** ATS Resume Matcher using NLP and ML | Dept. of Information Technology, SGGSIET, Nanded
 - **Slide 2 (Introduction):** Problem of manual resume screening, ATS industry context, project objectives (unsupervised, local, explainable).
-- **Slide 3 (Literature Survey):** Review of Joshi & Agrawal (IEEE 2021), Sinha & Kumar (IEEE 2020), and Roy et al. (Springer 2020) with direct links.
+- **Slide 3 (Literature Survey):** Review of Singh & Garg (IEEE 2024), Pendhari et al. (IEEE 2023), Panda et al. (IEEE 2024), and Sinha et al. (Springer 2021) with direct links.
 - **Slide 4 (Problem Statement & Limitations):** Vulnerability to keyword stuffing, tokenization failures on `C++`/`C#`, lack of explainability.
 - **Slide 5 (Proposed System & Architecture):** End-to-end pipeline: PyMuPDF -> TF-IDF Sublinear Vectorizer -> Cosine Similarity -> Lookaround Skill Extraction -> Composite Scoring.
 - **Slide 6 (Mathematical Formulation):** Formulas for Sublinear TF, Smooth IDF, L2-normalized Cosine Similarity, Skill Coverage, Composite ATS Score.

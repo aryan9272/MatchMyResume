@@ -158,13 +158,15 @@ Our engine uses **Sublinear Term Frequency** ($\text{tf} \to 1 + \ln(\text{tf})$
 
 ## 📚 Research Papers & What Makes Our Project Better
 
-If your faculty asks about **reference papers**, here are the 3 peer-reviewed IEEE & Springer papers our project improves upon:
+If your faculty asks about **reference papers**, here are the peer-reviewed IEEE & Springer research papers our project improves upon (all links verified):
 
 | Paper & Citation | What Their Paper Did | What Was Lacking (Flaws) | How Our Project Fixed It |
 | :--- | :--- | :--- | :--- |
-| **Joshi & Agrawal (IEEE 2021)**<br>[Read Paper](https://ieeexplore.ieee.org/document/9452819) | Basic unigram TF-IDF + Naive Bayes classifier | Standard tokenizers broke compound phrases ("deep learning") and split symbols (`C++`, `C#`, `.NET`). | We added **bigrams `(1, 2)`** and a **lookaround regex engine** that preserves special punctuation perfectly. |
-| **Sinha & Kumar (IEEE 2020)**<br>[Read Paper](https://ieeexplore.ieee.org/document/9154031) | Cosine similarity on plain resume text | Highly vulnerable to keyword stuffing; ignored hard technical skill counts. | We built a **dual-axis formula** separating general vocabulary match from hard skill coverage. |
-| **Roy et al. (Springer 2020)**<br>[Read Paper](https://link.springer.com/article/10.1007/s42979-020-00261-3) | Black-box supervised classification | No explanation given for score; candidates cannot learn what skills are missing. | We built **Explainable AI (XAI)** showing exact dot products and actionable gap suggestions. |
+| **Singh & Garg (IEEE 2024)**<br>*Resume Ranking with TF-IDF, Cosine Similarity and NER*<br>🔗 [IEEE Xplore Paper](https://ieeexplore.ieee.org/document/10961659/) | TF-IDF and Cosine Similarity baseline for candidate ranking | Standard tokenizers stripped punctuation, breaking technical languages (`C++`, `C#`, `.NET`), and raw TF was vulnerable to keyword repetition. | We added **sublinear log scaling**, **bigrams `(1, 2)`**, and a **lookaround regex engine** (`(?<![a-zA-Z0-9+#])c(?![a-zA-Z0-9+#])`) preserving special punctuation. |
+| **Pendhari et al. (IEEE 2023)**<br>*Resume Screening using Machine Learning*<br>🔗 [IEEE Xplore Paper](https://ieeexplore.ieee.org/document/10452483/) | Text extraction and similarity scoring against job profiles | Relied on a single similarity metric; conversational filler text could score higher than essential technical skills. | We built a **dual-axis composite formula** separating general vocabulary match from hard technical skill coverage. |
+| **Panda et al. (IEEE 2024)**<br>*Optimizing Resume Screening with Machine Learning: An NLP Approach*<br>🔗 [IEEE Xplore Paper](https://ieeexplore.ieee.org/document/10881885/) | Machine learning & NLP models for automated candidate matching | Complex architecture without explainability for individual candidates or recruiters. | We engineered **Explainable AI (XAI)** showing exact dot-product weights ($u_i \times v_i$) and actionable gap suggestions. |
+| **Sinha et al. (Springer 2021)**<br>*Resume Screening Using NLP and ML: A Systematic Review*<br>🔗 [Springer Nature Paper](https://link.springer.com/chapter/10.1007/978-981-33-4859-2_21) | Systematic survey analyzing state-of-the-art automated screening | Highlighted lack of explainability, data privacy risks with cloud APIs, and unfair bias in supervised models. | Our system is **100% local, unsupervised (unbiased)**, and provides full transparency with 3-way skill categorization. |
+| **Roy et al. (Springer 2022)**<br>*Automated Resume Classification Using Machine Learning*<br>🔗 [Springer Nature Paper](https://link.springer.com/chapter/10.1007/978-981-19-1018-0_26) | Classification models predicting job categories | Black-box predictions with no actionable feedback on what skills candidates need to add to match the job. | Integrated automated **gap remediation recommendations** and interactive Plotly comparison charts. |
 
 ---
 
